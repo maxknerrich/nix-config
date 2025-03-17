@@ -28,6 +28,7 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/0A00-892B";
     fsType = "vfat";
+    options = ["umask=0077" "dmask=0077" "fmask=0077" "noatime" "discard"];
   };
 
   # # Secondary boot partition - mount it to a special location
