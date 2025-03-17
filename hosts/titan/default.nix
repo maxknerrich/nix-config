@@ -23,7 +23,7 @@
     allowLocalDeployment = true;
   };
 
-  boot.loader.systemd-boot.enable = true;
+  # boot.loader.systemd-boot.enable = true;
   # boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = ["drivetemp"];
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
