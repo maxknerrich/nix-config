@@ -36,14 +36,23 @@
     fsType = "vfat";
   };
 
-  # Then add this to make systemd-boot install to both ESPs
-  boot.loader.efi.efiSysMountPoint = "/boot";
-  boot.loader.efi.mirroredBoots = [
-    {
-      devices = ["nodev"];
-      path = "/boot-backup";
-    }
+  # # Then add this to make systemd-boot install to both ESPs
+  # boot.loader.efi.efiSysMountPoint = "/boot";
+  # boot.loader.efi.mirroredBoots = [
+  #   {
+  #     devices = ["nodev"];
+  #     path = "/boot-backup";
+  #   }
+  # ];
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+    mirroredBoots = [
+      { devices = [ "nodev" ]; path = "/boot" }
+      { devices = [ "nodev" ]; path = "/boot-backup" }
   ];
+  };
 
   swapDevices = [];
 
