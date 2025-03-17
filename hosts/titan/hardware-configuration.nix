@@ -17,12 +17,12 @@
 
   fileSystems."/" = {
     device = "rpool/root";
-    fsType = "zfs";
+    fsType = "btrfs";
   };
 
   fileSystems."/home" = {
     device = "rpool/home";
-    fsType = "zfs";
+    fsType = "btrfs";
   };
 
   fileSystems."/boot" = {
