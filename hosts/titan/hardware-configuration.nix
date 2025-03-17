@@ -18,11 +18,19 @@
   fileSystems."/" = {
     device = "rpool/root";
     fsType = "btrfs";
+    options = ["subvol=root" "compress=zstd" "noatime"];
   };
 
   fileSystems."/home" = {
     device = "rpool/home";
     fsType = "btrfs";
+    options = ["subvol=home" "compress=zstd" "noatime"];
+  };
+
+  fileSystems."/nix" = {
+    device = "rpool/nix";
+    fsType = "btrfs";
+    options = ["subvol=nix" "compress=zstd" "noatime"];
   };
 
   fileSystems."/boot" = {
