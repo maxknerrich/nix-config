@@ -16,25 +16,25 @@
   powerManagement.cpuFreqGovernor = "powersave";
 
   fileSystems."/" = {
-    device = "rpool/root";
+    device = "/dev/disk/by-label/rpool/root";
     fsType = "btrfs";
     options = ["subvol=root" "compress=zstd" "noatime"];
   };
 
   fileSystems."/home" = {
-    device = "rpool/home";
+    device = "/dev/disk/by-label/rpool";
     fsType = "btrfs";
     options = ["subvol=home" "compress=zstd" "noatime"];
   };
 
   fileSystems."/nix" = {
-    device = "rpool/nix";
+    device = "/dev/disk/by-label/rpool";
     fsType = "btrfs";
     options = ["subvol=nix" "compress=zstd" "noatime"];
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/0A00-892B";
+    device = "/dev/disk/by-uuid/1A8D-741E";
     fsType = "vfat";
     options = ["umask=0077" "dmask=0077" "fmask=0077" "noatime" "discard"];
   };
