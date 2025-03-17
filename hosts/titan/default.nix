@@ -11,8 +11,8 @@
     #   url = "https://github.com/nix-community/nixos-vscode-server/tarball/master";
     #   sha256 = "09j4kvsxw1d5dvnhbsgih0icbrxqv90nzf0b589rb5z6gnzwjnqf";
     # })
-    ./../../common/nixos-common.nix
-    ./../../common/common-packages.nix
+    ./../common/nixos-common.nix
+    ./../common/common-packages.nix
   ];
 
   ## DEPLOYMENT
@@ -45,7 +45,7 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   #home-manager.backupFileExtension = "bak";
-  home-manager.users.mkn = {imports = [./../../../home/mkn.nix];};
+  home-manager.users.mkn = {imports = [./../../home/mkn.nix];};
   users.users.mkn = {
     isNormalUser = true;
     extraGroups = ["wheel" "docker" "render" "video"];
