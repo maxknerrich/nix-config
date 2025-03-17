@@ -49,9 +49,15 @@
     efiSupport = true;
     efiInstallAsRemovable = true;
     mirroredBoots = [
-      { devices = [ "nodev" ]; path = "/boot" }
-      { devices = [ "nodev" ]; path = "/boot-backup" }
-  ];
+      {
+        devices = ["/dev/disk/by-uuid/0A00-892B"];
+        path = "/boot";
+      }
+      {
+        devices = ["/dev/disk/by-uuid/0A3A-BC85"];
+        path = "/boot-backup";
+      }
+    ];
   };
 
   swapDevices = [];
