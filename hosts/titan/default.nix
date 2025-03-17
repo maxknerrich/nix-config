@@ -19,7 +19,7 @@
   deployment = {
     targetHost = "192.168.2.18";
     targetUser = "nixos";
-    buildOnTarget = true;
+    buildOnTarget = false;
     allowLocalDeployment = true;
   };
 
