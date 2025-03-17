@@ -44,20 +44,24 @@
   #     path = "/boot-backup";
   #   }
   # ];
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    efiInstallAsRemovable = true;
-    mirroredBoots = [
-      {
-        devices = ["/dev/disk/by-uuid/0A00-892B"];
-        path = "/boot";
-      }
-      {
-        devices = ["/dev/disk/by-uuid/0A3A-BC85"];
-        path = "/boot-backup";
-      }
-    ];
+
+  boot.loader = {
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/boot";
+    };
+    grub = {
+      enable = true;
+      efiSupport = true;
+      device = "/dev/disk/by-uuid/0A00-892B";
+      copyKernels = true;
+      extraInstallCommands = ''
+        # Install GRUB to the secondary ESP as well
+        GRUB_ESP_SECOND="/boot-backup"
+        $GRUB_INSTALL --boot-directory="$GRUB_ESP_SECOND" --efi-directory="$GRUB_ESP_SECOND" --target=x86_64-efi --no-nvram
+        cp -r /boot/EFI /boot-backup/
+      '';
+    };
   };
 
   swapDevices = [];
