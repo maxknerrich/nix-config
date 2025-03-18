@@ -33,6 +33,8 @@
   #   #"i915.force_probe=4e71"  # For Raptor Lake
   # ];
 
+  nix.settings.trusted-users = ["root" "mkn"];
+
   boot.supportedFilesystems = ["btrfs"];
   services.btrfs.autoScrub = {
     enable = true;
