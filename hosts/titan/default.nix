@@ -17,8 +17,8 @@
 
   ## DEPLOYMENT
   deployment = {
-    targetHost = "192.168.2.18";
-    targetUser = "nixos";
+    targetHost = "titan.local.knerrich.tech";
+    targetUser = "mkn";
     buildOnTarget = false;
     allowLocalDeployment = true;
   };
