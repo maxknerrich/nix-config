@@ -16,7 +16,7 @@
   powerManagement.cpuFreqGovernor = "powersave";
 
   fileSystems."/" = {
-    device = "/dev/disk/by-label/rpool/root";
+    device = "/dev/disk/by-label/rpool";
     fsType = "btrfs";
     options = ["subvol=root" "compress=zstd" "noatime"];
   };
