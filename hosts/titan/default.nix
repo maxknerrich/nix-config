@@ -36,13 +36,13 @@
       }
       {
         devices = ["nodev"];
-        path = "/bootBackup";
+        path = "/boot-backup";
       }
     ];
   };
 
-  fileSystems."/boot1".options = ["nofail"];
-  fileSystems."/boot2".options = ["nofail"];
+  fileSystems."/boot".options = ["nofail"];
+  fileSystems."/boot-backup".options = ["nofail"];
 
   boot.kernelModules = ["drivetemp"];
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
