@@ -4,6 +4,7 @@
   pkgs,
   lib,
   name,
+  self,
   ...
 }: {
   imports = [
@@ -17,7 +18,7 @@
     inputs.agenix.nixosModules.default
   ];
 
-  age.secrets.tgNotifyCredentials.file = ../../secrets/tgNotifyCredentials.age;
+  age.secrets.tgNotifyCredentials.file = "${self}/secrets/tgNotifyCredentials.age";
 
   ## DEPLOYMENT
   deployment = {
