@@ -26,7 +26,7 @@
           specialArgs = {
             inherit inputs outputs stateVersion self;
             # Add a dedicated secretsPath argument
-            secretsPath = "${self}/secrets";
+            secretsPath = "/var/lib/agenix-secrets/";
           };
         };
         defaults = {
