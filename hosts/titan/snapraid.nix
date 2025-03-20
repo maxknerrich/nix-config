@@ -29,7 +29,7 @@
         wantedBy = ["timers.target"];
         timerConfig = {
           # Run daily at 2:00 AM
-          OnCalendar = "13:00:00";
+          OnCalendar = "18:00:00";
           # If system was off when timer should have run, run it soon after boot
           Persistent = true;
         };
