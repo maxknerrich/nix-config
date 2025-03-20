@@ -14,7 +14,7 @@
     # })
     ./../common/nixos-common.nix
     ./../common/common-packages.nix
-    inputs.nixpkgs.lib.age # Add this line to import the age module
+    inputs.agenix.nixosModules.default
   ];
 
   age.secrets.tgNotifyCredentials.file = ../../secrets/tgNotifyCredentials.age;
