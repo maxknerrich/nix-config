@@ -23,6 +23,7 @@
     buildOnTarget = false;
     allowLocalDeployment = true;
   };
+  console.keyMap = "de";
   security.sudo.extraRules = [
     {
       users = ["mkn"];
