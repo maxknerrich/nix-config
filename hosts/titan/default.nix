@@ -152,7 +152,6 @@
   services.openssh = {
     enable = true;
     PasswordAuthentication = lib.mkDefault false;
-    LoginGraceTime = 0;
     PermitRootLogin = "no";
     hostKeys = [
       {
