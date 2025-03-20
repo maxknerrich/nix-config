@@ -11,6 +11,16 @@ in {
   time.timeZone = "Europe/Berlin";
   system.stateVersion = stateVersion;
 
+  i18n = {
+    defaultLocale = "de_DE.UTF-8";
+    supportedLocales = ["de_DE.UTF-8" "en_US.UTF-8"];
+  };
+
+  console = {
+    keyMap = "de";
+    font = "Lat2-Terminus16";
+  };
+
   # home-manager = {
   #     useGlobalPkgs = true;
   #     useUserPackages = true;
