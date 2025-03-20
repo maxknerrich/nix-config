@@ -151,8 +151,11 @@
   services.fwupd.enable = true;
   services.openssh = {
     enable = true;
-    PasswordAuthentication = lib.mkDefault false;
-    PermitRootLogin = "no";
+    settings = {
+      PasswordAuthentication = lib.mkDefault false;
+      LoginGraceTime = 0;
+      PermitRootLogin = "no";
+    };
     hostKeys = [
       {
         path = "/etc/ssh/ssh_host_ed25519_key";
