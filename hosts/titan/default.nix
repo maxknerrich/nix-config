@@ -16,6 +16,8 @@
     ./../common/common-packages.nix
   ];
 
+  age.secrets.tgNotifyCredentials.file = ../../secrets/tgNotifyCredentials.age;
+
   ## DEPLOYMENT
   deployment = {
     targetHost = "titan.local.knerrich.tech";
