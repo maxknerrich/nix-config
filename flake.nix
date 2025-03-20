@@ -11,6 +11,10 @@
     
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     vscode-server.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Alejandra
+    alejandra.url = "github:kamadorueda/alejandra/3.1.0";
+    alejandra.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -18,6 +22,7 @@
     nixpkgs,
     home-manager,
     vscode-server,
+    alejandra,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -26,16 +31,15 @@
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
       # FIXME replace with your hostname
-      titan = nixpkgs.lib.nixosSystem {
+      titan = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
         specialArgs = {inherit inputs outputs;};
         # > Our main nixos configuration file <
         modules = [
+          {
+            environment.systemPackages = [alejandra.defaultPackage.${system}];
+          }
           vscode-server.nixosModules.default
-          ({ config, pkgs, ... }: {
-            services.vscode-server.enable = true;
-            services.vscode-server.enableFHS = true;
-	    services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
-          })
           ./nixos/default.nix
         ];
       };

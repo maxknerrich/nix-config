@@ -20,6 +20,9 @@
     ./hardware-configuration.nix
   ];
 
+  services.vscode-server.enable = true;
+	services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
+
   nixpkgs = {
     # You can add overlays here
     overlays = [
@@ -94,6 +97,10 @@
       PasswordAuthentication = false;
     };
   };
+  environment.systemPackages = with pkgs; [
+    # Add your system-wide packages here
+    nil
+  ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.11";
