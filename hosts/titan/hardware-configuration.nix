@@ -41,7 +41,7 @@
 
   # Secondary boot partition - mount it to a special location
   fileSystems."/boot-backup" = {
-    device = "/dev/disk/by-uuid/0A3A-BC85"; # Replace with second drive's UUID
+    device = "/dev/disk/by-uuid/1A8E-621F"; # Replace with second drive's UUID
     fsType = "vfat";
     options = ["umask=0077" "dmask=0077" "fmask=0077" "noatime" "discard"];
   };
