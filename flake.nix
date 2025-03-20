@@ -10,7 +10,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     
     vscode-server.url = "github:nix-community/nixos-vscode-server";
-    vscode-server.inputs.nixpks.follows = "nixpkgs";
+    vscode-server.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -33,6 +33,8 @@
           vscode-server.nixosModules.default
           ({ config, pkgs, ... }: {
             services.vscode-server.enable = true;
+            services.vscode-server.enableFHS = true;
+	    services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
           })
           ./nixos/default.nix
         ];
