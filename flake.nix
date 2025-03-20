@@ -9,6 +9,11 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # disko.url = "github:nix-community/disko";
     # disko.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -38,6 +43,7 @@
         }: {
           imports = [
             inputs.home-manager.nixosModules.home-manager
+            ./users/mkn
           ];
         };
 

@@ -2,6 +2,7 @@
   config,
   inputs,
   pkgs,
+  lib,
   name,
   ...
 }: {
@@ -148,8 +149,19 @@
 
   services.fstrim.enable = true;
   services.fwupd.enable = true;
-  services.openssh.enable = true;
-  services.tailscale.enable = true;
+  services.openssh = {
+    enable = true;
+    PasswordAuthentication = lib.mkDefault false;
+    LoginGraceTime = 0;
+    PermitRootLogin = "no";
+    hostKeys = [
+      {
+        path = "/etc/ssh/ssh_host_ed25519_key";
+        type = "ed25519";
+      }
+    ];
+  };
+  # services.tailscale.enable = true;
 
   # services.sanoid = {
   #   enable = true;
