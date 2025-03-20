@@ -44,6 +44,7 @@
           imports = [
             inputs.home-manager.nixosModules.home-manager
             ./users/mkn
+            ./modules/tg-notify
           ];
         };
 

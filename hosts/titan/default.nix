@@ -254,6 +254,11 @@
     };
   };
 
+  tg-notify = {
+    enable = true;
+    credentialsFile = config.age.secrets.tgNotifyCredentials.path;
+  };
+
   nix = {
     settings = {
       trusted-users = ["root" "mkn"];
