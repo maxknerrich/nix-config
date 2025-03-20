@@ -12,12 +12,8 @@ in {
   system.stateVersion = stateVersion;
 
   i18n = {
-    defaultLocale = "de_DE.UTF-8";
-    supportedLocales = ["de_DE.UTF-8" "en_UK.UTF-8"];
-    locales = {
-      de_DE = "UTF-8";
-      en_UK = "UTF-8";
-    };
+    defaultLocale = "de_DE.UTF-8/UTF-8";
+    supportedLocales = ["de_DE.UTF-8/UTF-8" "en_UK.UTF-8/UTF-8"];
   };
 
   console = {
