@@ -23,8 +23,26 @@
     allowLocalDeployment = true;
   };
 
-  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    mirroredBoots = [
+      {
+        devices = ["nodev"];
+        path = "/boot";
+      }
+      {
+        devices = ["nodev"];
+        path = "/bootBackup";
+      }
+    ];
+  };
+
+  fileSystems."/boot1".options = ["nofail"];
+  fileSystems."/boot2".options = ["nofail"];
+
   boot.kernelModules = ["drivetemp"];
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   # boot.kernelParams = [

@@ -39,11 +39,12 @@
     options = ["umask=0077" "dmask=0077" "fmask=0077" "noatime" "discard"];
   };
 
-  # # Secondary boot partition - mount it to a special location
-  # fileSystems."/boot-backup" = {
-  #   device = "/dev/disk/by-uuid/0A3A-BC85"; # Replace with second drive's UUID
-  #   fsType = "vfat";
-  # };
+  # Secondary boot partition - mount it to a special location
+  fileSystems."/boot-backup" = {
+    device = "/dev/disk/by-uuid/0A3A-BC85"; # Replace with second drive's UUID
+    fsType = "vfat";
+    options = ["umask=0077" "dmask=0077" "fmask=0077" "noatime" "discard"];
+  };
 
   # # Then add this to make systemd-boot install to both ESPs
   # boot.loader.efi.efiSysMountPoint = "/boot";
