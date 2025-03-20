@@ -23,6 +23,29 @@
     buildOnTarget = false;
     allowLocalDeployment = true;
   };
+  security.sudo.extraRules = [
+    {
+      users = ["mkn"];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nix-env --profile /nix/var/nix/profiles/system --set *";
+          options = ["NOPASSWD"];
+        }
+        {
+          command = "/nix/store/*/bin/switch-to-configuration *";
+          options = ["NOPASSWD"];
+        }
+        {
+          command = "/run/current-system/sw/bin/cat /proc/sys/kernel/random/boot_id";
+          options = ["NOPASSWD"];
+        }
+        {
+          command = "/run/current-system/sw/bin/reboot";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
 
   boot.loader.efi.canTouchEfiVariables = true;
 
