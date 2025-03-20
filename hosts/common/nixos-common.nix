@@ -13,7 +13,7 @@ in {
 
   i18n = {
     defaultLocale = "de_DE.UTF-8/UTF-8";
-    supportedLocales = ["de_DE.UTF-8/UTF-8" "en_UK.UTF-8/UTF-8"];
+    supportedLocales = ["de_DE.UTF-8/UTF-8" "en_GB.UTF-8/UTF-8"];
   };
 
   console = {
