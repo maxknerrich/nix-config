@@ -1,3 +1,7 @@
 {pkgs, ...}: {
-  cockpit-files = pkgs.callPackage ./cockpit/cockpit-files {};
+  cockpit-benchmark = pkgs.callPackage ./cockpit/benchmark {};
+  cockpit-file-sharing = pkgs.callPackage ./cockpit/file-sharing {};
+  cockpit-files = pkgs.callPackage ./cockpit/files {};
+  cockpit-machines = pkgs.callPackage ./cockpit/machines {};
+  cockpit-sensors = pkgs.callPackage ./cockpit/sensors {};
 }
