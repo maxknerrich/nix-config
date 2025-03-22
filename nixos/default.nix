@@ -43,6 +43,8 @@
     };
   };
 
+  boot.loader.systemd-boot.configurationLimit = 10;
+
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
@@ -53,6 +55,14 @@
       flake-registry = "";
       # Workaround for https://github.com/NixOS/nix/issues/9574
       nix-path = config.nix.nixPath;
+
+      auto-optimise-store = true;
+    };
+    gc = {
+      # Perform garbage collection weekly to maintain low disk usage
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 1w";
     };
     # Opinionated: disable channels
     channel.enable = false;
@@ -97,6 +107,7 @@
     };
     openFirewall = true;
   };
+
   environment.systemPackages = with pkgs; [
     # Add your system-wide packages here
     nil
