@@ -120,7 +120,7 @@
   services.cockpit = {
     enable = true;
     port = 9090;
-    # openFirewall = true; # Please see the comments section
+    openFirewall = true;
     settings = {
       WebService = {
         AllowUnencrypted = true;
