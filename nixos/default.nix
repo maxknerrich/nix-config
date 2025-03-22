@@ -109,10 +109,24 @@
   };
 
   environment.systemPackages = with pkgs; [
-    # Add your system-wide packages here
+    # nix and deployment tools
     nil
     just
+
+    # Server packages
+    cockpit
   ];
+
+  services.cockpit = {
+    enable = true;
+    port = 9090;
+    # openFirewall = true; # Please see the comments section
+    settings = {
+      WebService = {
+        AllowUnencrypted = true;
+      };
+    };
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.11";
