@@ -6,6 +6,9 @@
 #
 ############################################################################
 
+default:
+    @just --list
+
 deploy:
   nixos-rebuild switch --flake . --use-remote-sudo
 
