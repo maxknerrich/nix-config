@@ -9,6 +9,7 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    # VS Code Server
     vscode-server.url = "github:nix-community/nixos-vscode-server";
     vscode-server.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -28,31 +29,28 @@
     inherit (self) outputs;
   in {
     # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
+    # Available through 'nixos-rebuild --flake .#hostname'
     nixosConfigurations = {
-      # FIXME replace with your hostname
       titan = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         specialArgs = {inherit inputs outputs;};
         # > Our main nixos configuration file <
         modules = [
+          ./nixos/default.nix
+
           {
             environment.systemPackages = [alejandra.defaultPackage.${system}];
           }
           vscode-server.nixosModules.default
-          ./nixos/default.nix
-        ];
-      };
-    };
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
 
-    # Standalone home-manager configuration entrypoint
-    # Available through 'home-manager --flake .#your-username@your-hostname'
-    homeConfigurations = {
-      "mkn@titan" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        # > Our main home-manager configuration file <
-        modules = [./home-manager/home.nix];
+            # TODO replace ryan with your own username
+            home-manager.users.ryan = import ./home.nix;
+          }
+        ];
       };
     };
   };

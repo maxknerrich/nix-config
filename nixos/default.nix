@@ -21,7 +21,7 @@
   ];
 
   services.vscode-server.enable = true;
-	services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
+  services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
 
   nixpkgs = {
     # You can add overlays here
@@ -77,8 +77,9 @@
     # FIXME: Replace with your username
     mkn = {
       isNormalUser = true;
+      description = "Max";
       openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"        
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
       ];
       # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
       extraGroups = ["wheel" "networkmanager"];
@@ -90,12 +91,11 @@
   services.openssh = {
     enable = true;
     settings = {
-      # Opinionated: forbid root login through SSH.
       PermitRootLogin = "no";
-      # Opinionated: use keys only.
-      # Remove if you want to SSH using passwords
       PasswordAuthentication = false;
+      X11Forwarding = true;
     };
+    openFirewall = true;
   };
   environment.systemPackages = with pkgs; [
     # Add your system-wide packages here
