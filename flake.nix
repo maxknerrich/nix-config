@@ -9,6 +9,7 @@
 
     # nur
     nur.url = "github:nix-community/NUR";
+    nur.inputs.nixpkgs.follows = "nixpkgs";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager/release-24.11";
