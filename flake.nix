@@ -47,7 +47,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
 
-            home-manager.users.mkn = import ./home-manager/home.nix;
+            home-manager.users.mkn = import ./home/home.nix;
           }
         ];
       };
