@@ -123,6 +123,8 @@
     # nix and deployment tools
     nil
     just
+
+    mergerfs
   ];
 
   # TODO: Only here as cockpit crashes with PAM remove later
