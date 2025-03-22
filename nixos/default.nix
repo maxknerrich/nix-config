@@ -35,6 +35,7 @@
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      outputs.overlays.nur
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
@@ -139,23 +140,7 @@
 
   services.cockpit = {
     enable = true;
-    port = 9090;
     openFirewall = true;
-    settings = {
-      WebService = {
-        AllowUnencrypted = true;
-        # Origins = builtins.concatStringsSep " " [
-        #   "http://${config.networking.hostName}:${toString config.services.cockpit.port}"
-        #   "https://${config.networking.hostName}:${toString config.services.cockpit.port}"
-        #   "http://localhost:${toString config.services.cockpit.port}"
-        #   "https://localhost:${toString config.services.cockpit.port}"
-        # ];
-        Origins = builtins.concatStringsSep " " [
-          "http://${config.networking.hostName}.local.knerrich.tech:${toString config.services.cockpit.port}"
-          "http://localhost:${toString config.services.cockpit.port}"
-        ];
-      };
-    };
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
