@@ -58,7 +58,10 @@
     nixosConfigurations = {
       titan = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        specialArgs = {inherit inputs outputs;};
+        specialArgs = {
+          inherit inputs outputs;
+          vars = import ./nixos/vars.nix;
+        };
         # > Our main nixos configuration file <
         modules = [
           ./nixos/default.nix
