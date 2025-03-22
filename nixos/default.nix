@@ -23,6 +23,8 @@
   services.vscode-server.enable = true;
   services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
 
+  time.timeZone = lib.mkDefault "Europe/Berlin";
+
   nixpkgs = {
     # You can add overlays here
     overlays = [
@@ -115,6 +117,20 @@
 
     # Server packages
     cockpit
+    cockpit-files
+  ];
+
+  # TODO: Only here as cockpit crashes with PAM remove later
+  security.sudo.extraRules = [
+    {
+      users = ["mkn"];
+      commands = [
+        {
+          command = "ALL";
+          options = ["NOPASSWD"]; # "SETENV" # Adding the following could be a good idea
+        }
+      ];
+    }
   ];
 
   services.cockpit = {
@@ -124,6 +140,16 @@
     settings = {
       WebService = {
         AllowUnencrypted = true;
+        # Origins = builtins.concatStringsSep " " [
+        #   "http://${config.networking.hostName}:${toString config.services.cockpit.port}"
+        #   "https://${config.networking.hostName}:${toString config.services.cockpit.port}"
+        #   "http://localhost:${toString config.services.cockpit.port}"
+        #   "https://localhost:${toString config.services.cockpit.port}"
+        # ];
+        Origins = builtins.concatStringsSep " " [
+          "http://${config.networking.hostName}.local.knerrich.tech:${toString config.services.cockpit.port}"
+          "http://localhost:${toString config.services.cockpit.port}"
+        ];
       };
     };
   };
