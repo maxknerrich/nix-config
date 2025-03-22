@@ -16,6 +16,7 @@
   environment.systemPackages = with pkgs; [
     mergerfs
     mergerfs-tools
+    parted
   ];
 
   boot.initrd.availableKernelModules = ["xhci_pci" "ehci_pci" "ahci" "usbhid" "uas" "sd_mod"];
