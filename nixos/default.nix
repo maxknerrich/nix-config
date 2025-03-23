@@ -90,6 +90,7 @@
 
   # TODO: Set your hostname
   networking.hostName = "titan";
+  networking.hostId = "59561e29"; # head -c4 /dev/urandom | od -A none -t x4
 
   i18n.defaultLocale = "en_GB.UTF-8";
   console = {
