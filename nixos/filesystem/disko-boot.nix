@@ -1,5 +1,5 @@
 let
-  ROOT_DISK_1 = "/dev/sda"; # CHANGE THESE
+  ROOT_DISK_1 = "/dev/sdb"; # CHANGE THESE
   ROOT_DISK_2 = "/dev/sde"; # CHANGE THESE
 in {
   disko.devices = {
