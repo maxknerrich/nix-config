@@ -19,7 +19,7 @@ in {
     enableDockerZvol = lib.mkOption {
       description = "Enable a separate ext4 zvol for Docker/Podman data";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
     bindmounts = lib.mkOption {
       description = "Set mountpoint for bindmounts";

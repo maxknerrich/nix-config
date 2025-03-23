@@ -172,15 +172,6 @@ in {
             options.mountpoint = "legacy";
             mountpoint = "/nix";
           };
-          docker = {
-            type = "zfs_volume";
-            size = "50G";
-            content = {
-              type = "filesystem";
-              format = "ext4";
-              mountpoint = "/var/lib/containers";
-            };
-          };
         };
       };
     };
