@@ -99,6 +99,7 @@
     mkn = {
       isNormalUser = true;
       description = "Max";
+      initialPassword = "changeme";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
       ];
@@ -144,7 +145,30 @@
     enable = true;
     openFirewall = true;
   };
+  # services.scrutiny = {
+  #   enable = true;
+  #   collector = {
+  #     enable = true;
+  #     settings.host.id = "titan";
+  #     settings.api.endpoint = "http://localhost:8080/scrutiny";
+  #   };
+  #   openFirewall = true;
+  #   settings = {
+  #     web = {
+  #       listen.port = 8080;
+  #       listen.basepath = "/scrutiny";
+  #     };
+  #   };
+  # };
 
+  services.scrutiny = {
+    enable = true;
+    collector.enable = true;
+    settings.web = {
+      listen.port = 8080;
+    };
+    openFirewall = true;
+  };
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.11";
 }
