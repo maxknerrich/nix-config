@@ -44,8 +44,8 @@ in {
     partitionScheme = lib.mkOption {
       default = {
         biosBoot = "-part4";
-        efiBoot = "-part2";
-        bootPool = "-part1";
+        efiBoot = "-part1";
+        bootPool = "-part2";
         rootPool = "-part3";
       };
       description = "Describe on disk partitions";
