@@ -25,6 +25,10 @@
 
     # impermanence
     impermanence.url = "github:nix-community/impermanence";
+
+    # disko
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
@@ -34,6 +38,7 @@
     vscode-server,
     alejandra,
     impermanence,
+    disko,
     ...
   } @ inputs: let
     inherit (self) outputs;

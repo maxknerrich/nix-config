@@ -20,7 +20,7 @@
     # ./users.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
-    "${builtins.fetchTarball "https://github.com/nix-community/disko/archive/master.tar.gz"}/module.nix"
+    inputs.disko.nixosModules.disko
     ./filesystem
     ./hardware-configuration.nix
   ];

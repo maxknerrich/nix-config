@@ -72,7 +72,7 @@ Clone this repository
 
 ```bash
 mkdir -p /mnt/etc/nixos
-git clone https://github.com/notthebee/nix-config.git /mnt/etc/nixos
+git clone https://github.com/maxknerrich/infrastructure.git /mnt/etc/nixos
 ```
 
 Install the system
@@ -81,7 +81,7 @@ Install the system
 nixos-install \
 --root "/mnt" \
 --no-root-passwd \
---flake "git+file:///mnt/etc/nixos#hostname" # titan, etc
+--flake "git+file:///mnt/etc/nixos#titan"
 ```
 
 Unmount the filesystems
