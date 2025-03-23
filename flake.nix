@@ -24,7 +24,7 @@
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
 
     # impermanence
-    impermanence.url = "github:nix-community/impermanence";
+    # impermanence.url = "github:nix-community/impermanence";
 
     # disko
     disko.url = "github:nix-community/disko";
@@ -37,7 +37,7 @@
     home-manager,
     vscode-server,
     alejandra,
-    impermanence,
+    # impermanence,
     disko,
     ...
   } @ inputs: let
