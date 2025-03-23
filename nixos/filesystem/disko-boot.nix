@@ -41,7 +41,7 @@ in {
         };
       };
       mirror = {
-        device = "/dev/disk/by-id${ROOT_DISK_2}";
+        device = "/dev/disk/by-id/${ROOT_DISK_2}";
         type = "disk";
         content = {
           type = "gpt";

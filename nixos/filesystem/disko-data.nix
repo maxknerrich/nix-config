@@ -6,7 +6,7 @@ let
 in {
   disko.devices = {
     disk = {
-      ${DATA_DISK_1} = {
+      disk1 = {
         device = "/dev/disk/by-id/${DATA_DISK_1}";
         type = "disk";
         content = {
@@ -37,7 +37,7 @@ in {
           };
         };
       };
-      ${DATA_DISK_2} = {
+      disk2 = {
         device = "/dev/disk/by-id/${DATA_DISK_2}";
         type = "disk";
         content = {
@@ -68,7 +68,7 @@ in {
           };
         };
       };
-      ${PARITY_DISK_1} = {
+      parity1 = {
         device = "/dev/disk/by-id/${PARITY_DISK_1}";
         type = "disk";
         content = {
