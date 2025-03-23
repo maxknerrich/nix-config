@@ -1,11 +1,11 @@
 let
-  ROOT_DISK_1 = "/dev/sdb"; # CHANGE THESE
-  ROOT_DISK_2 = "/dev/sde"; # CHANGE THESE
+  ROOT_DISK_1 = "ata-SanDisk_SSD_PLUS_240GB_24313W802439"; # CHANGE THESE
+  ROOT_DISK_2 = "ata-INTEL_SSDSC2BA200G3_BTTV5335017Q200GGN"; # CHANGE THESE
 in {
   disko.devices = {
     disk = {
       main = {
-        device = "${ROOT_DISK_1}";
+        device = "/dev/disk/by-id/${ROOT_DISK_1}";
         type = "disk";
         content = {
           type = "gpt";
@@ -16,7 +16,7 @@ in {
               content = {
                 type = "filesystem";
                 format = "vfat";
-                mountpoint = "/boot/efis/${ROOT_DISK_1}2";
+                mountpoint = "/boot/efis/${ROOT_DISK_1}-part2";
               };
             };
             bpool = {
@@ -41,7 +41,7 @@ in {
         };
       };
       mirror = {
-        device = "${ROOT_DISK_2}";
+        device = "/dev/disk/by-id${ROOT_DISK_2}";
         type = "disk";
         content = {
           type = "gpt";
@@ -52,7 +52,7 @@ in {
               content = {
                 type = "filesystem";
                 format = "vfat";
-                mountpoint = "/boot/efis/${ROOT_DISK_2}2";
+                mountpoint = "/boot/efis/${ROOT_DISK_2}-part2";
               };
             };
             bpool = {

@@ -1,13 +1,13 @@
 let
-  DATA_DISK_1 = "/dev/sda"; # CHANGE THESE
-  DATA_DISK_2 = "/dev/sdd"; # CHANGE THESE
+  DATA_DISK_1 = "ata-ST1000LM014-1EJ164_W7708ZYV"; # CHANGE THESE
+  DATA_DISK_2 = "ata-SAMSUNG_HD103SI_S1VSJDWZ570410"; # CHANGE THESE
 
-  PARITY_DISK_1 = "/dev/sdc"; # CHANGE THESE
+  PARITY_DISK_1 = "ata-TOSHIBA_DT01ACA200_Z32UXMXGS"; # CHANGE THESE
 in {
   disko.devices = {
     disk = {
       ${DATA_DISK_1} = {
-        device = "${DATA_DISK_1}";
+        device = "/dev/disk/by-id/${DATA_DISK_1}";
         type = "disk";
         content = {
           type = "gpt";
@@ -38,7 +38,7 @@ in {
         };
       };
       ${DATA_DISK_2} = {
-        device = "${DATA_DISK_2}";
+        device = "/dev/disk/by-id/${DATA_DISK_2}";
         type = "disk";
         content = {
           type = "gpt";
@@ -69,7 +69,7 @@ in {
         };
       };
       ${PARITY_DISK_1} = {
-        device = "${PARITY_DISK_1}";
+        device = "/dev/disk/by-id/${PARITY_DISK_1}";
         type = "disk";
         content = {
           type = "gpt";
