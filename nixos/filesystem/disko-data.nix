@@ -1,8 +1,8 @@
 let
-  DATA_DISK_1 = "/dev/vda"; # CHANGE THESE
-  DATA_DISK_2 = "/dev/vda"; # CHANGE THESE
+  DATA_DISK_1 = "/dev/sda"; # CHANGE THESE
+  DATA_DISK_2 = "/dev/sdd"; # CHANGE THESE
 
-  PARITY_DISK_1 = "/dev/vda"; # CHANGE THESE
+  PARITY_DISK_1 = "/dev/sdc"; # CHANGE THESE
 in {
   disko.devices = {
     disk = {
@@ -13,12 +13,25 @@ in {
           type = "gpt";
           partitions = {
             data = {
-              label = "data";
-              name = "data";
+              label = "disk1";
+              name = "disk1";
               size = "100%";
               content = {
                 type = "btrfs";
-                mountpoint = "/mnt/disks1";
+                subvolumes = {
+                  "/@data" = {
+                    mountpoint = "/mnt/disks1";
+                    mountOptions = ["subvol=@data"];
+                  };
+                  "/@content" = {
+                    mountpoint = "/mnt/snapraid-content/disk1";
+                    mountOptions = ["subvol=@content"];
+                  };
+                  "/@snapshots" = {
+                    mountpoint = "/mnt/disk1/.snapshots";
+                    mountOptions = ["subvol=@snapshots"];
+                  };
+                };
               };
             };
           };
@@ -31,12 +44,25 @@ in {
           type = "gpt";
           partitions = {
             data = {
-              label = "data";
-              name = "data";
+              label = "disk2";
+              name = "disk2";
               size = "100%";
               content = {
                 type = "btrfs";
-                mountpoint = "/mnt/disks2";
+                subvolumes = {
+                  "/@data" = {
+                    mountpoint = "/mnt/disks2";
+                    mountOptions = ["subvol=@data"];
+                  };
+                  "/@content" = {
+                    mountpoint = "/mnt/snapraid-content/disk2";
+                    mountOptions = ["subvol=@content"];
+                  };
+                  "/@snapshots" = {
+                    mountpoint = "/mnt/disk2/.snapshots";
+                    mountOptions = ["subvol=@snapshots"];
+                  };
+                };
               };
             };
           };
@@ -53,8 +79,9 @@ in {
               name = "parity1";
               size = "100%";
               content = {
-                type = "ext4";
-                extraArgs = ["-m 0" "-T largefile 4"];
+                type = "filesystem";
+                format = "ext4";
+                extraArgs = ["-m 0" "-T largefile4"];
                 mountpoint = "/mnt/parity1";
               };
             };
