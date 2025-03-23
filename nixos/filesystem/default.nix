@@ -50,20 +50,4 @@
     ];
     fsType = "fuse.mergerfs";
   };
-
-  boot.initrd.systemd = {
-    enable = true;
-    services.initrd-rollback-root = {
-      after = ["zfs-import-rpool.service"];
-      wantedBy = ["initrd.target"];
-      before = [
-        "sysroot.mount"
-      ];
-      path = [pkgs.zfs];
-      description = "Rollback root fs";
-      unitConfig.DefaultDependencies = "no";
-      serviceConfig.Type = "oneshot";
-      script = "zfs rollback -r rpool/nixos/empty@start";
-    };
-  };
 }
