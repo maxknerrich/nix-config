@@ -17,21 +17,21 @@
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
-  boot.loader = {
-    systemd-boot = {
-      enable = true;
-      consoleMode = "auto";
-      editor = false; # Security - prevent editing boot parameters
-    };
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    };
-    # Disable GRUB completely
-    grub.enable = false;
-  };
-  # Optimize BTRFS settings
-  boot.supportedFilesystems = ["btrfs"];
+  # boot.loader = {
+  #   systemd-boot = {
+  #     enable = true;
+  #     consoleMode = "auto";
+  #     editor = false; # Security - prevent editing boot parameters
+  #   };
+  #   efi = {
+  #     canTouchEfiVariables = true;
+  #     efiSysMountPoint = "/boot";
+  #   };
+  #   # Disable GRUB completely
+  #   grub.enable = false;
+  # };
+  # # Optimize BTRFS settings
+  # boot.supportedFilesystems = ["btrfs"];
   boot.kernelParams = ["noatime"];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
