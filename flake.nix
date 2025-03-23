@@ -73,7 +73,7 @@
         };
         # > Our main nixos configuration file <
         modules = [
-          impermanence.nixosModules.impermanence
+          # impermanence.nixosModules.impermanence
           ./nixos/default.nix
 
           {
