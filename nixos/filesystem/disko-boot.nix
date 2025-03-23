@@ -1,10 +1,10 @@
 let
-  ROOT_DISK_1 = "/dev/vda"; # CHANGE THESE
-  ROOT_DISK_2 = "/dev/vdb"; # CHANGE THESE
+  ROOT_DISK_1 = "/dev/sda"; # CHANGE THESE
+  ROOT_DISK_2 = "/dev/sde"; # CHANGE THESE
 in {
   disko.devices = {
     disk = {
-      ${ROOT_DISK_1} = {
+      "a_${ROOT_DISK_1}" = {
         device = "${ROOT_DISK_1}";
         type = "disk";
         content = {
@@ -31,7 +31,7 @@ in {
               };
             };
             root = {
-              label = "rpool";
+              label = "rpool1";
               name = "btrfs";
               size = "100%";
               content = {
@@ -41,19 +41,19 @@ in {
           };
         };
       };
-      ${ROOT_DISK_2} = {
+      "b_${ROOT_DISK_2}" = {
         device = "${ROOT_DISK_2}";
         type = "disk";
         content = {
           type = "gpt";
           partitions = {
             root = {
-              label = "rpool";
+              label = "rpool2";
               name = "btrfs";
               size = "100%";
               content = {
                 type = "btrfs";
-                extraArgs = ["-f" "-m raid1 -d raid1" "${ROOT_DISK_1}"];
+                extraArgs = ["-f" "-m raid1 -d raid1" "${ROOT_DISK_1}3" "-L rpool"];
                 subvolumes = {
                   "/@root" = {
                     mountpoint = "/";
@@ -77,7 +77,8 @@ in {
                   };
                 };
                 postCreateHook = ''
-                  mount "/dev/disk/by-label/system" "$MNTPOINT" -o subvol=/
+                  MNTPOINT=$(mktemp -d)
+                  mount "/dev/disk/by-partlabel/rpool2" "$MNTPOINT" -o subvol=/
                   trap 'umount $MNTPOINT; rm -rf $MNTPOINT' EXIT
                   btrfs subvolume snapshot -r $MNTPOINT/@root $MNTPOINT/@root-blank
                 '';
