@@ -22,6 +22,9 @@
     # Alejandra
     alejandra.url = "github:kamadorueda/alejandra/3.1.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
+
+    # impermanence
+    impermanence.url = "github:nix-community/impermanence";
   };
 
   outputs = {
@@ -30,6 +33,7 @@
     home-manager,
     vscode-server,
     alejandra,
+    impermanence,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -64,6 +68,7 @@
         };
         # > Our main nixos configuration file <
         modules = [
+          impermanence.nixosModules.impermanence
           ./nixos/default.nix
 
           {
