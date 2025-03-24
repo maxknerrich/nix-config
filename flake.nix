@@ -43,7 +43,6 @@
     vscode-server,
     alejandra,
     agenix,
-    # impermanence,
     disko,
     ...
   } @ inputs: let
@@ -84,9 +83,9 @@
           {
             environment.systemPackages = [alejandra.defaultPackage.${system}];
           }
+          agenix.nixosModules.default
           vscode-server.nixosModules.default
           home-manager.nixosModules.home-manager
-          agenix.nixosModules.default
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

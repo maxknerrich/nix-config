@@ -1,14 +1,9 @@
 # import & decrypt secrets in `mysecrets` in this module
-{
-  config,
-  pkgs,
-  agenix,
-  mysecrets,
-  ...
-}: {
-  imports = [
-    agenix.nixosModules.default
-  ];
+{mysecrets, ...}: {
+  # DIDN'T WORK CAUSE OF CIRCULAR DEPENDENCY
+  # imports = [
+  #   agenix.nixosModules.default
+  # ];
 
   # if you changed this key, you need to regenerate all encrypt files from the decrypt contents!
   age.identityPaths = [
