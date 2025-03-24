@@ -28,7 +28,7 @@
   services.vscode-server.enable = true;
   services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
 
-  time.timeZone = vars.timezone;
+  time.timeZone = vars.timeZone;
 
   nixpkgs = {
     # You can add overlays here
