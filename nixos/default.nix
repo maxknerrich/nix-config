@@ -62,10 +62,14 @@
   boot.extraModulePackages = [];
 
   boot.loader = {
-    systemd-boot.enable = true;
-    systemd-boot.efiSysMountPoint = "/boot";
     efi.canTouchEfiVariables = true;
+    systemd-boot = {
+      enable = true;
+      configurationLimit = 15;
+    };
+    timeout = lib.mkDefault 2;
   };
+  console.earlySetup = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
