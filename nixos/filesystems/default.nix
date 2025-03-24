@@ -6,6 +6,7 @@
   imports = [
     ./disko.nix
     ./snapraid.nix
+    ./swap.nix
   ];
   environment.systemPackages = with pkgs; [
     mergerfs
