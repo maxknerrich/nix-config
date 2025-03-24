@@ -3,5 +3,4 @@
 {
   # List your module files here
   cockpit = import ./cockpit;
-  zfs-root = import ./zfs-root;
 }
