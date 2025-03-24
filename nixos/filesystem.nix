@@ -5,29 +5,9 @@
   pkgs,
   ...
 }: {
-  # configure impermanence
-  # environment.persistence."/persist" = {
-  #   directories = [
-  #     "/etc/nixos"
-  #   ];
-  #   files = [
-  #     "/etc/machine-id"
-  #     "/etc/ssh/ssh_host_ed25519_key"
-  #     "/etc/ssh/ssh_host_ed25519_key.pub"
-  #     "/etc/ssh/ssh_host_rsa_key"
-  #     "/etc/ssh/ssh_host_rsa_key.pub"
-  #   ];
-  # };
-
-  # security.sudo.extraConfig = ''
-  #   # rollback results in sudo lectures after each reboot
-  #   Defaults lecture = never
-  # '';
-
   imports = [
-    ./disko-data.nix
+    ./disko.nix
   ];
-
   environment.systemPackages = with pkgs; [
     mergerfs
     mergerfs-tools

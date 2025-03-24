@@ -6,6 +6,7 @@
   lib,
   config,
   pkgs,
+  vars,
   ...
 }: {
   # You can import other NixOS modules here
@@ -23,13 +24,12 @@
     # Import your generated (nixos-generate-config) hardware configuration
     inputs.disko.nixosModules.disko
     ./filesystem
-    ./hardware-configuration.nix
   ];
 
   services.vscode-server.enable = true;
   services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
 
-  time.timeZone = lib.mkDefault "Europe/Berlin";
+  time.timeZone = vars.timezone;
 
   nixpkgs = {
     # You can add overlays here
@@ -57,7 +57,20 @@
     };
   };
 
-  boot.loader.systemd-boot.configurationLimit = 10;
+  boot.initrd.availableKernelModules = ["xhci_pci" "ehci_pci" "ahci" "usbhid" "uas" "sd_mod"];
+  boot.initrd.kernelModules = [];
+  boot.kernelModules = ["kvm-intel"];
+  boot.extraModulePackages = [];
+
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp2s0.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
@@ -128,8 +141,6 @@
     # nix and deployment tools
     nil
     just
-
-    mergerfs
   ];
 
   # TODO: Only here as cockpit crashes with PAM remove later
@@ -149,22 +160,6 @@
     enable = true;
     openFirewall = true;
   };
-  # services.scrutiny = {
-  #   enable = true;
-  #   collector = {
-  #     enable = true;
-  #     settings.host.id = "titan";
-  #     settings.api.endpoint = "http://localhost:8080/scrutiny";
-  #   };
-  #   openFirewall = true;
-  #   settings = {
-  #     web = {
-  #       listen.port = 8080;
-  #       listen.basepath = "/scrutiny";
-  #     };
-  #   };
-  # };
-
   services.scrutiny = {
     enable = true;
     collector.enable = true;
