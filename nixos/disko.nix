@@ -12,7 +12,7 @@
     extraArgs = [
       "-f"
       "-m raid1 -d raid1"
-      "/dev/disk/by-id/${mainDisk}-part3"
+      "/dev/disk/by-id/${mainDisk}-part2"
       "-L rpool"
     ];
     rootSubvolumes = {
@@ -44,7 +44,7 @@
     #   trap 'umount $MNTPOINT; rm -rf $MNTPOINT' EXIT
     #   btrfs subvolume snapshot -r $MNTPOINT/@root $MNTPOINT/@root-blank
     # '';
-    rootSsd = idx: id: id1: {
+    rootSsd = idx: id: {
       type = "disk";
       device = "/dev/disk/by-id/${id}";
       content = {
@@ -60,13 +60,6 @@
                 if idx == 1
                 then "/boot"
                 else "/boot-${builtins.toString idx}";
-            };
-          };
-          swap = {
-            size = "64G";
-            content = {
-              type = "swap";
-              discardPolicy = "both";
             };
           };
           root = {

@@ -62,6 +62,12 @@
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
 
+  boot.loader = {
+    systemd-boot.enable = true;
+    systemd-boot.efiSysMountPoint = "/boot";
+    efi.canTouchEfiVariables = true;
+  };
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
