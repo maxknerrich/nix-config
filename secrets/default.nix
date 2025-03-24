@@ -1,5 +1,5 @@
 # import & decrypt secrets in `mysecrets` in this module
-{mysecrets, ...}: {
+{inputs, ...}: {
   # DIDN'T WORK CAUSE OF CIRCULAR DEPENDENCY
   # imports = [
   #   agenix.nixosModules.default
@@ -16,9 +16,9 @@
     # whether secrets are symlinked to age.secrets.<name>.path
     symlink = true;
     # target path for decrypted file
-    path = "/etc/titan/";
+    # path = "/etc/titan"; gave an error
     # encrypted file path
-    file = "${mysecrets}/titan.age"; # refer to ./xxx.age located in `mysecrets` repo
+    file = "${inputs.mysecrets}/titan.age"; # refer to ./xxx.age located in `mysecrets` repo
     mode = "0400";
     owner = "root";
     group = "root";

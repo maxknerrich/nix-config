@@ -75,6 +75,7 @@
         specialArgs = {
           inherit inputs outputs;
           vars = import ./nixos/vars.nix;
+          mysecrets = inputs.mysecrets;
         };
         # > Our main nixos configuration file <
         modules = [
