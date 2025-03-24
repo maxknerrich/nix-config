@@ -15,9 +15,7 @@
 in {
   services.snapraid = {
     enable = true;
-    parityFiles = parityFiles;
-    contentFiles = contentFiles;
-    dataDisks = dataDisks;
+    inherit contentFiles parityFiles dataDisks;
     exclude = [
       "*.unrecoverable"
       "/tmp/"
