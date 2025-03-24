@@ -18,19 +18,23 @@
     rootSubvolumes = {
       "@root" = {
         mountpoint = "/";
-        options = ["compress=zstd" "noatime" "subvol=@root"];
+        options = ["compress=zstd" "noatime"];
       };
       "@home" = {
         mountpoint = "/home";
-        options = ["compress=zstd" "noatime" "subvol=@home"];
+        options = ["compress=zstd" "noatime"];
+      };
+      "@swap" = {
+        mountpoint = "/.swapvol";
+        swap.swapfile.size = "4G";
       };
       "@nix" = {
         mountpoint = "/nix";
-        options = ["compress=zstd" "noatime" "subvol=@nix"];
+        options = ["compress=zstd" "noatime"];
       };
       "@log" = {
         mountpoint = "/var/log";
-        options = ["compress=zstd" "noatime" "subvol=@log"];
+        options = ["compress=zstd" "noatime"];
       };
     };
     # Currently not used as no impermanence is configured
