@@ -6,11 +6,11 @@
   }) (builtins.genList (x: x + 1) vars.dataDisks));
 
   contentFiles = builtins.map (
-    i: "/mnt/data${toString i}/snapraid.content"
+    i: "/mnt/snapraid.content/data${toString i}/snapraid.content"
   ) (builtins.genList (x: x + 1) vars.dataDisks);
 
   parityFiles = builtins.map (
-    i: "/mnt/data${toString i}/snapraid.parity"
+    i: "/mnt/parity${toString i}/snapraid.parity"
   ) (builtins.genList (x: x + 1) vars.parityDisks);
 in {
   services.snapraid = {
