@@ -23,9 +23,6 @@
     alejandra.url = "github:kamadorueda/alejandra/3.1.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
 
-    # impermanence
-    # impermanence.url = "github:nix-community/impermanence";
-
     # disko
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -73,7 +70,6 @@
         };
         # > Our main nixos configuration file <
         modules = [
-          # impermanence.nixosModules.impermanence
           ./nixos/default.nix
 
           {
