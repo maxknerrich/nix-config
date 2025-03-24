@@ -84,7 +84,7 @@
       device = "/dev/disk/by-id/${id}";
       content = {
         type = "gpt";
-        partitions.main = {
+        partitions.data = {
           size = "100%";
           content = {
             type = "btrfs";
@@ -108,7 +108,7 @@
       device = "/dev/disk/by-id/${id}";
       content = {
         type = "gpt";
-        partitions.main = {
+        partitions.parity = {
           size = "100%";
           content = {
             type = "filesystem";
