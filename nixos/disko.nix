@@ -18,11 +18,11 @@
     rootSubvolumes = {
       "@root" = {
         mountpoint = "/";
-        options = ["compress=zstd" "noatime"];
+        mountoptions = ["compress=zstd" "noatime"];
       };
       "@home" = {
         mountpoint = "/home";
-        options = ["compress=zstd" "noatime"];
+        mountoptions = ["compress=zstd" "noatime"];
       };
       "@swap" = {
         mountpoint = "/.swapvol";
@@ -30,11 +30,11 @@
       };
       "@nix" = {
         mountpoint = "/nix";
-        options = ["compress=zstd" "noatime"];
+        mountoptions = ["compress=zstd" "noatime"];
       };
       "@log" = {
         mountpoint = "/var/log";
-        options = ["compress=zstd" "noatime"];
+        mountoptions = ["compress=zstd" "noatime"];
       };
     };
     # Currently not used as no impermanence is configured
@@ -98,15 +98,12 @@
             subvolumes = {
               "/@data" = {
                 mountpoint = "/mnt/data${builtins.toString idx}";
-                mountOptions = ["subvol=@data"];
               };
               "/@content" = {
                 mountpoint = "/mnt/snapraid-content/data${builtins.toString idx}";
-                mountOptions = ["subvol=@content"];
               };
               "/@snapshots" = {
                 mountpoint = "/mnt/data${builtins.toString idx}/.snapshots";
-                mountOptions = ["subvol=@snapshots"];
               };
             };
           };
