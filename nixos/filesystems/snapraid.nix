@@ -1,4 +1,4 @@
-{vars}: let
+{vars, ...}: let
   # Generate the dataDisks set
   dataDisks = builtins.listToAttrs (builtins.map (i: {
     name = "d${toString i}";
