@@ -60,6 +60,7 @@
                 if idx == 1
                 then "/boot"
                 else "/boot-${builtins.toString idx}";
+              mountOptions = ["uid=0" "gid=0" "fmask=0077" "dmask=0077"];
             };
           };
           root = {
