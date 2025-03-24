@@ -22,7 +22,7 @@
 
     # Import your generated (nixos-generate-config) hardware configuration
     inputs.disko.nixosModules.disko
-    ./filesystem.nix
+    ./filesystems
   ];
 
   services.vscode-server.enable = true;

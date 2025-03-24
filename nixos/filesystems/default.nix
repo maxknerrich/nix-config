@@ -1,12 +1,11 @@
 {
-  config,
-  lib,
   vars,
   pkgs,
   ...
 }: {
   imports = [
     ./disko.nix
+    ./snapraid.nix
   ];
   environment.systemPackages = with pkgs; [
     mergerfs
