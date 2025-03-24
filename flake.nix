@@ -29,6 +29,11 @@
     # disko
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    mysecrets = {
+      url = "git+ssh://git@github.com:maxknerrich/nix-secrets.git?shallow=1";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -75,7 +80,7 @@
         # > Our main nixos configuration file <
         modules = [
           ./nixos/default.nix
-
+          ./secrets/default.nix
           {
             environment.systemPackages = [alejandra.defaultPackage.${system}];
           }
