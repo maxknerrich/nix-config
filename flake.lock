@@ -207,6 +207,23 @@
         "type": "github"
       }
     },
+    "mysecrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1742846748,
+        "narHash": "sha256-wnJ3Y7yp/jSgQ+A2IVJCROAtnushMz0uW9gEiPUlSmA=",
+        "ref": "refs/heads/main",
+        "rev": "017eb5f43417ad6450f8fbd3ca7e034fba4ee6d7",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/maxknerrich/nix-secrets.git"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/maxknerrich/nix-secrets.git"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1742388435,
@@ -267,6 +284,7 @@
         "alejandra": "alejandra",
         "disko": "disko",
         "home-manager": "home-manager_2",
+        "mysecrets": "mysecrets",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",

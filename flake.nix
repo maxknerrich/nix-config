@@ -31,7 +31,7 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
     mysecrets = {
-      url = "git+ssh://git@github.com:maxknerrich/nix-secrets.git?shallow=1";
+      url = "git+ssh://git@github.com/maxknerrich/nix-secrets.git?shallow=1";
       flake = false;
     };
   };
