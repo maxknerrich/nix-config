@@ -91,21 +91,21 @@
       device = "/dev/disk/by-id/${id}";
       content = {
         type = "gpt";
-        partitions.zfs = {
+        partitions.main = {
           size = "100%";
           content = {
             type = "btrfs";
             subvolumes = {
               "/@data" = {
-                mountpoint = "/mnt/data${idx}";
+                mountpoint = "/mnt/data${builtins.toString idx}";
                 mountOptions = ["subvol=@data"];
               };
               "/@content" = {
-                mountpoint = "/mnt/snapraid-content/data${idx}";
+                mountpoint = "/mnt/snapraid-content/data${builtins.toString idx}";
                 mountOptions = ["subvol=@content"];
               };
               "/@snapshots" = {
-                mountpoint = "/mnt/data${idx}/.snapshots";
+                mountpoint = "/mnt/data${builtins.toString idx}/.snapshots";
                 mountOptions = ["subvol=@snapshots"];
               };
             };
@@ -118,13 +118,13 @@
       device = "/dev/disk/by-id/${id}";
       content = {
         type = "gpt";
-        partitions.zfs = {
+        partitions.main = {
           size = "100%";
           content = {
             type = "filesystem";
             format = "ext4";
             extraArgs = ["-m 0" "-T largefile4"];
-            mountpoint = "/mnt/parity${idx}";
+            mountpoint = "/mnt/parity${builtins.toString idx}";
           };
         };
       };
