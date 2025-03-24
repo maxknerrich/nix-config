@@ -33,11 +33,14 @@
   # # Optimize BTRFS settings
   # boot.supportedFilesystems = ["btrfs"];
 
+  services.zfs = {
+    autoScrub.enable = true;
+  };
   zfs-root = {
     boot = {
       devNodes = "/dev/disk/by-id/";
       bootDevices = ["ata-SanDisk_SSD_PLUS_240GB_24313W802439" "ata-INTEL_SSDSC2BA200G3_BTTV5335017Q200GGN"];
-      immutable = false;
+      immutable = true;
       availableKernelModules = [
         "xhci_pci"
         "ehci_pci"

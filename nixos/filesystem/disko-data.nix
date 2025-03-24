@@ -20,7 +20,7 @@ in {
                 type = "btrfs";
                 subvolumes = {
                   "/@data" = {
-                    mountpoint = "/mnt/disks1";
+                    mountpoint = "/mnt/disk1";
                     mountOptions = ["subvol=@data"];
                   };
                   "/@content" = {
@@ -51,7 +51,7 @@ in {
                 type = "btrfs";
                 subvolumes = {
                   "/@data" = {
-                    mountpoint = "/mnt/disks2";
+                    mountpoint = "/mnt/disk2";
                     mountOptions = ["subvol=@data"];
                   };
                   "/@content" = {
