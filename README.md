@@ -27,39 +27,19 @@ ssh -A root@$NIXOS_HOST
 Partition and mount the boot/root drives using [disko](https://github.com/nix-community/disko)
 
 ```bash
-curl https://raw.githubusercontent.com/maxknerrich/infrastructure/refs/heads/main/nixos/filesystem/disko-boot.nix \
-    -o /tmp/disko-boot.nix
+curl https://raw.githubusercontent.com/maxknerrich/infrastructure/refs/heads/main/nixos/disko.nix \
+    -o /tmp/disko.nix
 ```
-Change disk names if needed
+Change disk ids if necessary
 ```bash
 lsblk # check the disks
-nano /tmp/disko-boot.nix # edit the disks name
+nano /tmp/disko.nix
 ```
 
-Create the boot/root partition
+Partition the disks
 ```bash
 nix --experimental-features "nix-command flakes" run github:nix-community/disko \
-    -- -m destroy,format,mount /tmp/disko-boot.nix
-```
-
-If you want to format the data and parity drives do the following
-```bash
-curl https://raw.githubusercontent.com/maxknerrich/infrastructure/refs/heads/main/nixos/filesystem/disko-data.nix \
-    -o /tmp/disko-data.nix
-nano /tmp/disko-boot.nix # edit the disks name
-
-```
-
-Format the data and parity drives
-```bash
-nix --experimental-features "nix-command flakes" run github:nix-community/disko \
-		-- -m destroy,format,mount /tmp/disko-data.nix
-```	
-
-After that remount the boot partitions
-```bash
-nix --experimental-features "nix-command flakes" run github:nix-community/disko \
-		-- -m mount /tmp/disko-boot.nix
+    -- -m destroy,format,mount /tmp/disko.nix
 ```
 
 After the command has run, your file system should have been formatted and mounted. You can verify this by running the following command:
@@ -87,8 +67,7 @@ nixos-install \
 Unmount the filesystems
 
 ```bash
-umount "/mnt/boot/efis/*"
-umount -Rl "/mnt"
+umount -Rl /mnt
 zpool export -a
 ```
 
