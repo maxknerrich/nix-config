@@ -76,6 +76,9 @@
     enable = true;
     userName = "Max Knerrich";
     userEmail = "max.knerrich@outook.com";
+    extraConfig = {
+      init.defaultBranch = "main";
+    };
   };
 
   # starship - an customizable prompt for any shell
