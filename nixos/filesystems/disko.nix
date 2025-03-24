@@ -24,10 +24,11 @@
         mountpoint = "/home";
         mountOptions = ["compress=zstd" "noatime"];
       };
-      "@swap" = {
-        mountpoint = "/.swapvol";
-        swap.swapfile.size = "4G";
-      };
+      # TODO: currently broken
+      # "@swap" = {
+      #   mountpoint = "/.swapvol";
+      #   swap.swapfile.size = "4G";
+      # };
       "@nix" = {
         mountpoint = "/nix";
         mountOptions = ["compress=zstd" "noatime"];

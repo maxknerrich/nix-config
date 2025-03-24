@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}: {
+{...}: {
   swapDevices = [
     {
       device = "/.swapvol/swapfile";
