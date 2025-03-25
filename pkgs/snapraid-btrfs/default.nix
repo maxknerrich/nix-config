@@ -1,7 +1,7 @@
 {
-  symlinkJoin,
+  lib,
+  stdenv,
   fetchFromGitHub,
-  writeScriptBin,
   makeWrapper,
   coreutils,
   gnugrep,
@@ -9,37 +9,54 @@
   gnused,
   snapraid,
   snapper,
-}: let
-  name = "snapraid-btrfs";
-  deps = [coreutils gnugrep gawk gnused snapraid snapper];
-  script =
-    (
-      writeScriptBin name
-      # NOTE: Original version from automorphism88
-      #       unfortunately, it breaks with new snapper version 0.11.1
-      # (builtins.readFile ((fetchFromGitHub {
-      #     owner = "automorphism88";
-      #     repo = "snapraid-btrfs";
-      #     rev = "8cdbf54100c2b630ee9fcea11b14f58a894b4bf3";
-      #     sha256 = "IQgL55SMwViOnl3R8rQ9oGsanpFOy4esENKTwl8qsgo=";
-      #   })
-      #   + "/snapraid-btrfs"))
-      # NOTE: Forked version from D34DC3N73R to fix snapper 0.11.1 compatibility
-      (builtins.readFile ((fetchFromGitHub {
-          owner = "D34DC3N73R";
-          repo = "snapraid-btrfs";
-          rev = "ea9a1cfbfbe1cefcae9c038e1a4962d4bc2de843";
-          sha256 = "sha256-+UCBGlGFqRKgFjCt1GdOSxaayTONfwisxdnZEwxOnSY=";
-        })
-        + "/snapraid-btrfs"))
-    )
-    .overrideAttrs (old: {
-      buildCommand = "${old.buildCommand}\n patchShebangs $out";
-    });
-in
-  symlinkJoin {
-    inherit name;
-    paths = [script] ++ deps;
-    buildInputs = [makeWrapper];
-    postBuild = "wrapProgram $out/bin/${name} --set PATH $out/bin";
-  }
+}:
+stdenv.mkDerivation rec {
+  pname = "snapraid-btrfs";
+  version = "0.1.0"; # Adding a version field, adjust as needed
+
+  # used fork as original repo seem no longer maintained
+  # and this fork works with snapper v11
+  src = fetchFromGitHub {
+    owner = "D34DC3N73R";
+    repo = "snapraid-btrfs";
+    rev = "ea9a1cfbfbe1cefcae9c038e1a4962d4bc2de843";
+    hash = "sha256-+UCBGlGFqRKgFjCt1GdOSxaayTONfwisxdnZEwxOnSY=";
+  };
+
+  # No build phase needed as this is a shell script
+  dontBuild = true;
+
+  nativeBuildInputs = [makeWrapper];
+
+  runtimeDependencies = [
+    coreutils
+    gnugrep
+    gawk
+    gnused
+    snapraid
+    snapper
+  ];
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/bin
+    cp snapraid-btrfs $out/bin/
+    chmod +x $out/bin/snapraid-btrfs
+    patchShebangs $out/bin/snapraid-btrfs
+
+    wrapProgram $out/bin/snapraid-btrfs \
+      --prefix PATH : ${lib.makeBinPath runtimeDependencies}
+
+    runHook postInstall
+  '';
+
+  meta = with lib; {
+    description = "A wrapper script to ease using snapraid with btrfs snapshots";
+    homepage = "https://github.com/D34DC3N73R/snapraid-btrfs";
+    license = licenses.gpl3; # Assuming GPL-3.0 license, adjust if different
+    maintainers = []; # Add yourself if you want
+    platforms = platforms.linux;
+    mainProgram = "snapraid-btrfs";
+  };
+}
