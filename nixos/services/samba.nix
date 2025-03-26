@@ -13,6 +13,7 @@
         "workgroup" = "MKN";
         "server string" = "titan";
         "security" = "user";
+        "invalid users" = ["root"];
         "guest ok" = "yes";
         "guest account" = "nobody";
         "map to guest" = "bad user";
