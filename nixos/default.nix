@@ -25,6 +25,7 @@
     # Import your generated (nixos-generate-config) hardware configuration
     inputs.disko.nixosModules.disko
     ./filesystems
+    ./services
   ];
 
   tg-notify = {
