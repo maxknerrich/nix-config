@@ -6,7 +6,6 @@
   };
   services.samba = {
     enable = true;
-    securityType = "user";
     openFirewall = true;
     settings = {
       global = {
@@ -19,21 +18,21 @@
         "map to guest" = "bad user";
         "load printers" = "no";
       };
-    };
-    shares = let
-      mkShare = path: {
-        path = path;
-        browseable = "yes";
-        "read only" = "no";
-        "guest ok" = "yes";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "mkn";
-        "force group" = "users";
-        "veto files" = "/.snapshots"; # dont show snapshots in samba
-      };
-    in {
-      storage = mkShare "/mnt/storage";
+      # Define shares within settings
+      storage = let
+        mkShare = {
+          path = "/mnt/storage";
+          browseable = "yes";
+          "read only" = "no";
+          "guest ok" = "yes";
+          "create mask" = "0644";
+          "directory mask" = "0755";
+          "force user" = "mkn";
+          "force group" = "users";
+          "veto files" = "/.snapshots"; # dont show snapshots in samba
+        };
+      in
+        mkShare;
     };
   };
 }
