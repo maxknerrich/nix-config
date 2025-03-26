@@ -3,4 +3,6 @@
 {
   # List your module files here
   cockpit = import ./cockpit;
+  snapraid-btrfs = import ./snapraid-btrfs;
+  tg-notify = import ./tgnotify;
 }

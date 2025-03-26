@@ -12,13 +12,13 @@
     "/etc/ssh/ssh_host_ed25519_key"
   ];
 
-  age.secrets."titan" = {
+  age.secrets."tgCredentials" = {
     # whether secrets are symlinked to age.secrets.<name>.path
     symlink = true;
     # target path for decrypted file
     # path = "/etc/titan"; gave an error
     # encrypted file path
-    file = "${inputs.mysecrets}/titan.age"; # refer to ./xxx.age located in `mysecrets` repo
+    file = "${inputs.mysecrets}/tgCredentials.age"; # refer to ./xxx.age located in `mysecrets` repo
     mode = "0400";
     owner = "root";
     group = "root";

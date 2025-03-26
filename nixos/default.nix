@@ -13,6 +13,8 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
     outputs.nixosModules.cockpit
+    outputs.nixosModules.snapraid-btrfs
+    outputs.nixosModules.tg-notify
     # If you want to use modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
@@ -24,6 +26,11 @@
     inputs.disko.nixosModules.disko
     ./filesystems
   ];
+
+  tg-notify = {
+    enable = true;
+    credentialsFile = config.age.secrets.tgCredentials.path;
+  };
 
   services.vscode-server.enable = true;
   services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
