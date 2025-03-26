@@ -1,6 +1,7 @@
 {
   vars,
   lib,
+  config,
   pkgs,
   ...
 }: let
@@ -10,9 +11,13 @@
     value = "/mnt/data${toString i}";
   }) (builtins.genList (x: x + 1) vars.dataDisks));
 
-  contentFiles = builtins.map (
-    i: "/mnt/snapraid-content/data${toString i}/snapraid.content"
-  ) (builtins.genList (x: x + 1) vars.dataDisks);
+  contentFiles =
+    [
+      "/var/snapraid/snapraid.content"
+    ]
+    ++ builtins.map (
+      i: "/mnt/snapraid-content/data${toString i}/snapraid.content"
+    ) (builtins.genList (x: x + 1) vars.dataDisks);
 
   parityFiles = builtins.map (
     i: "/mnt/parity${toString i}/snapraid.parity"
@@ -28,12 +33,11 @@
     })
     (builtins.attrValues (builtins.mapAttrs (name: value: {inherit name value;}) dataDisks)));
 in {
-  environment.systemPackages = with pkgs; [
-    snapraid-btrfs
-    snapraid-btrfs-runner
+  systemd.tmpfiles.rules = [
+    "f /var/snapraid/snapraid.content 0750 mkn users -" #The - disables automatic cleanup, so the file wont be removed after a period
+    "f /var/snapraid/snapraid.content.lock 0750 mkn users -" #The - disables automatic cleanup, so the file wont be removed after a period
   ];
-
-  services.snapraid = {
+  services.snapraid-btrfs = {
     enable = true;
     inherit contentFiles parityFiles dataDisks;
     exclude = [
@@ -45,52 +49,19 @@ in {
       "*.!sync"
       "/.snapshots/"
     ];
+    # Configure the sync and scrub schedules here
+    sync.interval = "01:00"; # Run sync daily
   };
+
   services.snapper = {
     configs = snapperConfigs;
   };
-  systemd.services.snapraid-btrfs-sync = {
-    description = "Run the snapraid-btrfs sync with the runner";
-    startAt = ["15:00" "19:25"];
-    serviceConfig = {
-      Type = "oneshot";
-      User = "root";
-      Group = "root";
-      ExecStart = "+${pkgs.snapraid-btrfs-runner}/bin/snapraid-btrfs-runner";
-      Nice = 19;
-      IOSchedulingPriority = 7;
-      CPUSchedulingPolicy = "batch";
 
-      LockPersonality = true;
-      MemoryDenyWriteExecute = true;
-      NoNewPrivileges = true;
-      PrivateTmp = true;
-      ProtectClock = true;
-      ProtectControlGroups = true;
-      ProtectHostname = true;
-      ProtectKernelLogs = true;
-      ProtectKernelModules = true;
-      ProtectKernelTunables = true;
-      RestrictAddressFamilies = "AF_UNIX";
-      RestrictNamespaces = true;
-      RestrictRealtime = true;
-      RestrictSUIDSGID = true;
-      SystemCallArchitectures = "native";
-      SystemCallFilter = "@system-service";
-      SystemCallErrorNumber = "EPERM";
-      CapabilityBoundingSet = "";
-      ProtectSystem = "strict";
-      ProtectHome = "read-only";
-      ReadOnlyPaths = ["/etc/snapraid.conf" "/etc/snapper"];
-      ReadWritePaths =
-        # sync requires access to directories containing content files
-        # to remove them if they are stale
-        let
-          contentDirs = builtins.map builtins.dirOf contentFiles;
-        in
-          lib.unique (
-            builtins.attrValues dataDisks ++ parityFiles ++ contentDirs
-          );
-    };
-  };
+  # Configure snapraid-btrfs to override the standard snapraid commands
+  # services.snapraid-btrfs = {
+  #   enable = true;
+  #   # Generate the snapperConfigs list from your dataDisks
+  #   snapperConfigs = builtins.attrNames dataDisks;
+  #   cleanup = true;
+  # };
 }
