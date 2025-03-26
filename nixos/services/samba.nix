@@ -1,13 +1,17 @@
 {...}: {
-  services.samba-wsdd.enable = true; # make shares visible for windows 10 clients
+  # make shares visible for windows 10 clients
+  services.samba-wsdd = {
+    enable = true;
+    openFirewall = true;
+  };
   services.samba = {
     enable = true;
     securityType = "user";
+    openFirewall = true;
     settings = {
       global = {
-        "workgroup" = "WORKGROUP";
+        "workgroup" = "MKN";
         "server string" = "titan";
-        "netbios name" = "titan";
         "security" = "user";
         "guest ok" = "yes";
         "guest account" = "nobody";
@@ -25,6 +29,7 @@
         "directory mask" = "0755";
         "force user" = "mkn";
         "force group" = "users";
+        "veto files" = "/.snapshots"; # dont show snapshots in samba
       };
     in {
       storage = mkShare "/mnt/storage";
