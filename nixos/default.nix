@@ -158,6 +158,7 @@
     # nix and deployment tools
     nil
     just
+    hd-idle
   ];
 
   # TODO: Only here as cockpit crashes with PAM remove later
