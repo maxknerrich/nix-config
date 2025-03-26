@@ -51,17 +51,13 @@ in {
     ];
     # Configure the sync and scrub schedules here
     sync.interval = "01:00"; # Run sync daily
+    scrub = {
+      plan = 22;
+      olderThan = 8;
+    };
   };
 
   services.snapper = {
     configs = snapperConfigs;
   };
-
-  # Configure snapraid-btrfs to override the standard snapraid commands
-  # services.snapraid-btrfs = {
-  #   enable = true;
-  #   # Generate the snapperConfigs list from your dataDisks
-  #   snapperConfigs = builtins.attrNames dataDisks;
-  #   cleanup = true;
-  # };
 }
