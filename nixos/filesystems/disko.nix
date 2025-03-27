@@ -24,11 +24,6 @@
         mountpoint = "/home";
         mountOptions = ["compress=zstd" "noatime"];
       };
-      # TODO: currently broken
-      # "@swap" = {
-      #   mountpoint = "/.swapvol";
-      #   swap.swapfile.size = "4G";
-      # };
       "@nix" = {
         mountpoint = "/nix";
         mountOptions = ["compress=zstd" "noatime"];
@@ -64,6 +59,17 @@
               mountOptions = ["uid=0" "gid=0" "fmask=0077" "dmask=0077"];
             };
           };
+          swap =
+            if idx == 1
+            then {
+              size = "24G";
+              content = {
+                type = "swap";
+                discardPolicy = "both";
+                resumeDevice = true; # Enable hibernation from this device
+              };
+            }
+            else null;
           root = {
             size = "100%";
             content = {
