@@ -97,14 +97,14 @@
           content = {
             type = "btrfs";
             subvolumes = {
-              "/@data" = {
+              "@data" = {
                 mountpoint = "/mnt/data${builtins.toString idx}";
               };
-              "/@content" = {
+              "@content" = {
                 mountpoint = "/mnt/snapraid-content/data${builtins.toString idx}";
               };
-              "/@snapshots" = {
-                mountpoint = "/mnt/data${builtins.toString idx}/.snapshots";
+              "@snapshots" = {
+                mountpoint = "/mnt/snapshots/data${builtins.toString idx}";
               };
             };
           };
