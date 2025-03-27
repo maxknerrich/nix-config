@@ -9,30 +9,6 @@
 
   disko.devices = let
     mainDisk = "ata-SanDisk_SSD_PLUS_240GB_24313W802439";
-    extraArgs = [
-      "-f"
-      "-m raid1 -d raid1"
-      "/dev/disk/by-id/${mainDisk}-part2"
-      "-L rpool"
-    ];
-    rootSubvolumes = {
-      "@root" = {
-        mountpoint = "/";
-        mountOptions = ["compress=zstd" "noatime"];
-      };
-      "@home" = {
-        mountpoint = "/home";
-        mountOptions = ["compress=zstd" "noatime"];
-      };
-      "@nix" = {
-        mountpoint = "/nix";
-        mountOptions = ["compress=zstd" "noatime"];
-      };
-      "@log" = {
-        mountpoint = "/var/log";
-        mountOptions = ["compress=zstd" "noatime"];
-      };
-    };
     # Currently not used as no impermanence is configured
     # postCreateHook = ''
     #   MNTPOINT=$(mktemp -d)
@@ -40,7 +16,7 @@
     #   trap 'umount $MNTPOINT; rm -rf $MNTPOINT' EXIT
     #   btrfs subvolume snapshot -r $MNTPOINT/@root $MNTPOINT/@root-blank
     # '';
-    rootSsd = idx: id: {
+    rootSsd = id: {
       type = "disk";
       device = "/dev/disk/by-id/${id}";
       content = {
@@ -52,36 +28,61 @@
             content = {
               type = "filesystem";
               format = "vfat";
-              mountpoint =
-                if idx == 1
-                then "/boot"
-                else "/boot-${builtins.toString idx}";
+              mountpoint = "/boot";
               mountOptions = ["uid=0" "gid=0" "fmask=0077" "dmask=0077"];
             };
           };
-          swap =
-            if idx == 1
-            then {
-              size = "24G";
-              content = {
-                type = "swap";
-                discardPolicy = "both";
-                resumeDevice = true; # Enable hibernation from this device
-              };
-            }
-            else null;
+          swap = {
+            size = "24G";
+            content = {
+              type = "swap";
+              discardPolicy = "both";
+              resumeDevice = true; # Enable hibernation from this device
+            };
+          };
           root = {
             size = "100%";
             content = {
               type = "btrfs";
-              extraArgs =
-                if idx == 2
-                then extraArgs
-                else [];
-              subvolumes =
-                if idx == 2
-                then rootSubvolumes
-                else {};
+            };
+          };
+        };
+      };
+    };
+    poolSsd = id: {
+      type = "disk";
+      device = "/dev/disk/by-id/${id}";
+      content = {
+        type = "gpt";
+        partitions = {
+          root = {
+            size = "100%";
+            content = {
+              type = "btrfs";
+              extraArgs = [
+                "-f"
+                "-m raid1 -d raid1"
+                "/dev/disk/by-id/${mainDisk}-part3"
+                "-L rpool"
+              ];
+              subvolumes = {
+                "@root" = {
+                  mountpoint = "/";
+                  mountOptions = ["compress=zstd" "noatime"];
+                };
+                "@home" = {
+                  mountpoint = "/home";
+                  mountOptions = ["compress=zstd" "noatime"];
+                };
+                "@nix" = {
+                  mountpoint = "/nix";
+                  mountOptions = ["compress=zstd" "noatime"];
+                };
+                "@log" = {
+                  mountpoint = "/var/log";
+                  mountOptions = ["compress=zstd" "noatime"];
+                };
+              };
             };
           };
         };
@@ -130,8 +131,8 @@
   in {
     disk = {
       # Root pool disks
-      ssd1 = rootSsd 1 mainDisk;
-      ssd2 = rootSsd 2 "ata-INTEL_SSDSC2BA200G3_BTTV5335017Q200GGN";
+      ssd1 = rootSsd mainDisk;
+      ssd2 = poolSsd "ata-INTEL_SSDSC2BA200G3_BTTV5335017Q200GGN";
 
       # Data pool disks, uncomment in setup if you don't need partioning
       hdd-1 = dataHdd 1 "ata-ST1000LM014-1EJ164_W7708ZYV";
