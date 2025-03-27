@@ -144,15 +144,15 @@
         # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
         extraGroups = ["wheel" "networkmanager"];
       };
+      root.openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
+      ];
     };
     groups = {
       mkn = {
         gid = 1000;
       };
     };
-    root.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
-    ];
   };
   age.secrets.hashedUserPassword = {
     file = "${inputs.mysecrets}/hashedUserPassword.age";
