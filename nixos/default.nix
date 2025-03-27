@@ -33,8 +33,8 @@
     credentialsFile = config.age.secrets.tgCredentials.path;
   };
 
-  services.vscode-server.enable = true;
-  services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
+  # services.vscode-server.enable = true;
+  # services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
 
   time.timeZone = vars.timeZone;
 

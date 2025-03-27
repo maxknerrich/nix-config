@@ -40,7 +40,7 @@
     self,
     nixpkgs,
     home-manager,
-    vscode-server,
+    # vscode-server,
     alejandra,
     agenix,
     disko,
