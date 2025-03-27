@@ -128,20 +128,32 @@
   };
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
-  users.users = {
-    # FIXME: Replace with your username
-    mkn = {
-      isNormalUser = true;
-      description = "Max";
-      initialPassword = "changeme";
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
-      ];
-      # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
-      extraGroups = ["wheel" "networkmanager"];
+  users = {
+    mutableUsers = false;
+    users = {
+      # FIXME: Replace with your username
+      mkn = {
+        isNormalUser = true;
+        description = "Max";
+        uid = 1000;
+        group = "mkn";
+        hashedPasswordFile = config.age.secrets.hashedUserPassword.path;
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
+        ];
+        # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
+        extraGroups = ["wheel" "networkmanager"];
+      };
+    };
+    groups = {
+      mkn = {
+        gid = 1000;
+      };
     };
   };
-
+  age.secrets.hashedUserPassword = {
+    file = "${inputs.mysecrets}/hashedUserPassword.age";
+  };
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.
   services.openssh = {

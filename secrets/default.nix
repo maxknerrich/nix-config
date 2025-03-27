@@ -23,4 +23,7 @@
     owner = "root";
     group = "root";
   };
+  age.secrets."hashedUserPassword" = {
+    file = "${inputs.mysecrets}/hashedUserPassword.age"; # refer to ./xxx.age located in `mysecrets` repo
+  };
 }
