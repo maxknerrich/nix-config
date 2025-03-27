@@ -19,8 +19,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # VS Code Server
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
-    vscode-server.inputs.nixpkgs.follows = "nixpkgs";
+    # vscode-server.url = "github:nix-community/nixos-vscode-server";
+    # vscode-server.inputs.nixpkgs.follows = "nixpkgs";
 
     # Alejandra
     alejandra.url = "github:kamadorueda/alejandra/3.1.0";
@@ -85,7 +85,7 @@
             environment.systemPackages = [alejandra.defaultPackage.${system}];
           }
           agenix.nixosModules.default
-          vscode-server.nixosModules.default
+          # vscode-server.nixosModules.default
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
