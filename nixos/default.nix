@@ -40,7 +40,7 @@
 
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = "schedutil";
+    cpuFreqGovernor = "conservative";
     powertop.enable = true;
   };
 
@@ -72,7 +72,12 @@
 
   boot.initrd.availableKernelModules = ["xhci_pci" "ehci_pci" "ahci" "usbhid" "uas" "sd_mod"];
   boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-intel"];
+  boot.kernelModules = [
+    "kvm-intel"
+    "cpufreq_conservative"
+    "cpufreq_powersave"
+    "cpufreq_ondemand"
+  ];
   boot.extraModulePackages = [];
 
   boot.loader = {
