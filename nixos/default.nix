@@ -180,6 +180,7 @@
     nil
     just
     hd-idle
+    powertop
   ];
 
   # TODO: Only here as cockpit crashes with PAM remove later
