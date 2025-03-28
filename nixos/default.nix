@@ -38,6 +38,12 @@
 
   time.timeZone = vars.timeZone;
 
+  powerManagement = {
+    enable = true;
+    cpuFreqGovernor = "schedutil";
+    powertop.enable = true;
+  };
+
   nixpkgs = {
     # You can add overlays here
     overlays = [
