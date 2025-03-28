@@ -101,6 +101,7 @@
       nix-path = config.nix.nixPath;
 
       auto-optimise-store = true;
+      trusted-users = ["root" "@wheel"];
     };
     gc = {
       # Perform garbage collection weekly to maintain low disk usage
@@ -144,9 +145,7 @@
         # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
         extraGroups = ["wheel" "networkmanager"];
       };
-      root.openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
-      ];
+      root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
     };
     groups = {
       mkn = {
@@ -162,7 +161,8 @@
   services.openssh = {
     enable = true;
     settings = {
-      PermitRootLogin = "no";
+      # root user is used for remote deployment, so we need to allow it
+      PermitRootLogin = "prohibit-password";
       PasswordAuthentication = false;
       X11Forwarding = true;
     };

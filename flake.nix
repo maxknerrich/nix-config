@@ -18,14 +18,6 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # VS Code Server
-    # vscode-server.url = "github:nix-community/nixos-vscode-server";
-    # vscode-server.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Alejandra
-    alejandra.url = "github:kamadorueda/alejandra/3.1.0";
-    alejandra.inputs.nixpkgs.follows = "nixpkgs";
-
     # disko
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -34,16 +26,16 @@
       url = "git+ssh://git@github.com/maxknerrich/nix-secrets.git?shallow=1";
       flake = false;
     };
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
 
   outputs = {
     self,
     nixpkgs,
     home-manager,
-    # vscode-server,
-    alejandra,
     agenix,
     disko,
+    deploy-rs,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -70,7 +62,7 @@
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#hostname'
     nixosConfigurations = {
-      titan = nixpkgs.lib.nixosSystem rec {
+      titan = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit inputs outputs;
@@ -81,11 +73,8 @@
         modules = [
           ./nixos/default.nix
           ./secrets/default.nix
-          {
-            environment.systemPackages = [alejandra.defaultPackage.${system}];
-          }
           agenix.nixosModules.default
-          # vscode-server.nixosModules.default
+
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -96,5 +85,14 @@
         ];
       };
     };
+    deploy.nodes.titan = {
+      hostname = "titan.local.knerrich.tech";
+      profiles.system = {
+        user = "root";
+        sshUser = "mkn";
+        path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.titan;
+      };
+    };
+    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
   };
 }
