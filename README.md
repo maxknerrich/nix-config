@@ -27,7 +27,7 @@ ssh -A root@$NIXOS_HOST
 Partition and mount the boot/root drives using [disko](https://github.com/nix-community/disko)
 
 ```bash
-curl https://raw.githubusercontent.com/maxknerrich/infrastructure/refs/heads/main/nixos/disko.nix \
+curl https://raw.githubusercontent.com/maxknerrich/infrastructure/refs/heads/main/nixos/filesystems/disko.nix \
     -o /tmp/disko.nix
 ```
 Change disk ids if necessary
@@ -68,11 +68,14 @@ Unmount the filesystems
 
 ```bash
 umount -Rl /mnt
-zpool export -a
 ```
 
 Reboot
 
 ```bash
 reboot
+```
+Put config in home and symlink
+```bash
+sudo ln -s ~/_infra /etc/nixos
 ```
