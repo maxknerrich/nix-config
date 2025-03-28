@@ -205,14 +205,6 @@
     enable = true;
     openFirewall = true;
   };
-  services.scrutiny = {
-    enable = true;
-    collector.enable = true;
-    settings.web = {
-      listen.port = 8080;
-    };
-    openFirewall = true;
-  };
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.11";
 }
