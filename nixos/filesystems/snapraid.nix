@@ -2,6 +2,7 @@
   vars,
   lib,
   config,
+  pkgs,
   ...
 }: let
   # Generate the dataDisks set
@@ -77,6 +78,37 @@ in {
         RestrictNamespaces = lib.mkForce false;
         RestrictAddressFamilies = lib.mkForce "";
       };
+    };
+  };
+
+  services.smartd = {
+    enable = true;
+    defaults.autodetected = "-a -o on -S on -s (S/../.././02|L/../../6/03) -n standby,q";
+    extraOptions = [
+      "--interval 3600" # Check every hour
+    ];
+    notifications = {
+      wall = {
+        enable = true;
+      };
+      mail = {
+        enable = true;
+        sender = "titan.local@knerrich.tech";
+        recipient = "knerrichmax@gmail.com";
+      };
+    };
+  };
+
+  programs.msmtp = {
+    enable = true;
+    accounts.default = {
+      auth = true;
+      host = "smtp.gmail.com";
+      port = 587;
+      from = "titan.local@knerrich.tech";
+      user = "knerrichmax@gmail.com";
+      tls = true;
+      passwordeval = "${pkgs.coreutils}/bin/cat ${config.age.secrets.googleAppPassword.path}";
     };
   };
 
