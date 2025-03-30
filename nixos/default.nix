@@ -154,7 +154,7 @@
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
         ];
         # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
-        extraGroups = ["wheel" "networkmanager"];
+        extraGroups = ["wheel" "networkmanager" "video"];
       };
       root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
     };
@@ -200,6 +200,15 @@
       ];
     }
   ];
+
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-vaapi-driver
+    ];
+  };
+
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "i965";
 
   services.cockpit = {
     enable = true;
