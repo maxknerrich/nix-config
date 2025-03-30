@@ -1,4 +1,9 @@
-{vars, ...}: let
+{
+  vars,
+  lib,
+  config,
+  ...
+}: let
   # Generate the dataDisks set
   dataDisks = builtins.listToAttrs (builtins.map (i: {
     name = "d${toString i}";
@@ -31,7 +36,9 @@ in {
     "f /var/snapraid/snapraid.content 0750 mkn users -" #The - disables automatic cleanup, so the file wont be removed after a period
     "f /var/snapraid/snapraid.content.lock 0750 mkn users -" #The - disables automatic cleanup, so the file wont be removed after a period
   ];
-  services.snapraid-btrfs = {
+
+  # TODO: Snapraid BTRFS
+  services.snapraid = {
     enable = true;
     inherit contentFiles parityFiles dataDisks;
     exclude = [
@@ -44,14 +51,36 @@ in {
       "/.snapshots/"
     ];
     # Configure the sync and scrub schedules here
-    sync.interval = "01:00"; # Run sync daily
+    sync.interval = "00:00"; # Run sync daily
     scrub = {
       plan = 22;
       olderThan = 8;
+      interval = "01:00"; # Run scrub daily
     };
   };
 
-  services.snapper = {
-    configs = snapperConfigs;
+  systemd.services = lib.attrsets.optionalAttrs (config.services.snapraid.enable) {
+    snapraid-sync = {
+      onFailure = lib.lists.optionals (config ? tg-notify && config.tg-notify.enable) [
+        "tg-notify@%i.service"
+      ];
+      serviceConfig = {
+        RestrictNamespaces = lib.mkForce false;
+        RestrictAddressFamilies = lib.mkForce "";
+      };
+    };
+    snapraid-scrub = {
+      onFailure = lib.lists.optionals (config ? tg-notify && config.tg-notify.enable) [
+        "tg-notify@%i.service"
+      ];
+      serviceConfig = {
+        RestrictNamespaces = lib.mkForce false;
+        RestrictAddressFamilies = lib.mkForce "";
+      };
+    };
   };
+
+  # services.snapper = {
+  #   configs = snapperConfigs;
+  # };
 }
