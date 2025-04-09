@@ -27,6 +27,7 @@
       flake = false;
     };
     deploy-rs.url = "github:serokell/deploy-rs";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
   outputs = {
@@ -35,6 +36,7 @@
     home-manager,
     agenix,
     disko,
+    nixos-wsl,
     deploy-rs,
     ...
   } @ inputs: let
@@ -71,8 +73,8 @@
         };
         # > Our main nixos configuration file <
         modules = [
-          ./nixos/default.nix
-          ./secrets/default.nix
+          ./hosts/titan
+          ./secrets
           agenix.nixosModules.default
 
           home-manager.nixosModules.home-manager
@@ -84,13 +86,31 @@
           }
         ];
       };
+      fawkes = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          nixos-wsl.nixosModules.default
+          ./hosts/fawkes
+        ];
+      };
     };
-    deploy.nodes.titan = {
-      hostname = "titan.local.knerrich.tech";
-      profiles.system = {
+    deploy.nodes = {
+      titan = {
+        hostname = "titan.local.knerrich.tech";
+        profiles.system = {
+          user = "root";
+          sshUser = "mkn";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.titan;
+        };
+      };
+      fawkes = {
+        hostname = "127.0.0.1";
         user = "root";
+        sshOpts = ["-p" "69"];
         sshUser = "mkn";
-        path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.titan;
+        profiles.system = {
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.fawkes;
+        };
       };
     };
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
