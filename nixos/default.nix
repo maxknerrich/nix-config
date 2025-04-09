@@ -177,7 +177,6 @@
       PasswordAuthentication = false;
       X11Forwarding = true;
     };
-    openFirewall = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -186,6 +185,9 @@
     just
     hd-idle
     powertop
+    tmux
+    smartmontools
+    hdparm
   ];
 
   # TODO: Only here as cockpit crashes with PAM remove later
@@ -213,7 +215,9 @@
 
   services.cockpit = {
     enable = true;
-    openFirewall = true;
+  };
+  networking.firewall = {
+    enable = false;
   };
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.11";

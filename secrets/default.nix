@@ -29,4 +29,7 @@
   age.secrets."googleAppPassword" = {
     file = "${inputs.mysecrets}/googleAppPassword.age";
   };
+  age.secrets."fsPWD" = {
+    file = "${inputs.mysecrets}/fsPWD.age";
+  };
 }
