@@ -68,7 +68,7 @@
         system = "x86_64-linux";
         specialArgs = {
           inherit inputs outputs;
-          vars = import ./nixos/vars.nix;
+          vars = import ./hosts/titan/vars.nix;
           mysecrets = inputs.mysecrets;
         };
         # > Our main nixos configuration file <
