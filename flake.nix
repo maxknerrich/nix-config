@@ -27,6 +27,7 @@
       flake = false;
     };
     deploy-rs.url = "github:serokell/deploy-rs";
+
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
@@ -73,24 +74,27 @@
         };
         # > Our main nixos configuration file <
         modules = [
-          ./hosts/titan
-          ./secrets
           agenix.nixosModules.default
-
           home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
 
-            home-manager.users.mkn = import ./home/home.nix;
-          }
+          ./secrets
+          ./hosts/titan
+          ./users/mkn
         ];
       };
       fawkes = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs outputs;
+        };
         modules = [
           nixos-wsl.nixosModules.default
+          agenix.nixosModules.default
+          home-manager.nixosModules.home-manager
+
+          ./secrets
           ./hosts/fawkes
+          ./users/mkn
         ];
       };
     };
