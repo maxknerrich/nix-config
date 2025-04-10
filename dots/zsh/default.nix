@@ -58,6 +58,11 @@
         bindkey '^[[A' history-substring-search-up
         bindkey '^[[B' history-substring-search-down
 
+        if grep -q microsoft /proc/version 2>/dev/null; then
+          alias explorer="/mnt/c/Windows/explorer.exe"
+          alias code="/mnt/c/Users/mkn/AppData/Local/Programs/'Microsoft VS Code'/bin/code";
+        fi
+
         if command -v motd &> /dev/null
         then
           motd

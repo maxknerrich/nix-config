@@ -11,6 +11,10 @@
 }: {
   time.timeZone = "Europe/Berlin";
 
+  imports = [
+    ./vscode.nix
+  ];
+
   networking.hostName = "fawkes";
   programs.zsh.enable = true;
   wsl = {
@@ -53,6 +57,10 @@
       trusted-users = ["root" "@wheel"];
     };
   };
+  environment.systemPackages = with pkgs; [
+    git
+    wget
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
