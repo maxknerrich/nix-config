@@ -9,13 +9,18 @@
   pkgs,
   ...
 }: {
-  imports = [
-    # include NixOS-WSL modules
-    <nixos-wsl/modules>
-  ];
+  time.timeZone = "Europe/Berlin";
+
+  networking.hostName = "fawkes";
   programs.zsh.enable = true;
-  wsl.enable = true;
-  wsl.defaultUser = "mkn";
+  wsl = {
+    enable = true;
+    wslConf.automount.root = "/mnt";
+    wslConf.interop.appendWindowsPath = false;
+    wslConf.network.generateHosts = false;
+    defaultUser = "mkn";
+    startMenuLaunchers = true;
+  };
   users.users.mkn = {
     isNormalUser = true;
     shell = pkgs.zsh;
@@ -36,6 +41,16 @@
       PermitRootLogin = "prohibit-password";
       PasswordAuthentication = false;
       X11Forwarding = true;
+    };
+  };
+  nix = {
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 7d";
+    };
+    settings = {
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["root" "@wheel"];
     };
   };
 
