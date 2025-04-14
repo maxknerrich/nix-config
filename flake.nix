@@ -77,6 +77,8 @@
           agenix.nixosModules.default
           home-manager.nixosModules.home-manager
 
+          ./core
+
           ./secrets
           ./hosts/titan
           ./users/mkn
@@ -91,6 +93,8 @@
           nixos-wsl.nixosModules.default
           agenix.nixosModules.default
           home-manager.nixosModules.home-manager
+
+          ./core
 
           ./secrets
           ./hosts/fawkes

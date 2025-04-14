@@ -6,7 +6,6 @@
   lib,
   config,
   pkgs,
-  vars,
   ...
 }: {
   # You can import other NixOS modules here
@@ -36,8 +35,6 @@
   # services.vscode-server.enable = true;
   # services.vscode-server.installPath = "$HOME/.vscode-server-insiders";
 
-  time.timeZone = vars.timeZone;
-
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "conservative";
@@ -63,11 +60,6 @@
       #   });
       # })
     ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-    };
   };
 
   boot.initrd.availableKernelModules = ["xhci_pci" "ehci_pci" "ahci" "usbhid" "uas" "sd_mod"];
@@ -100,92 +92,20 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  nix = let
-    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
-  in {
-    settings = {
-      # Enable flakes and new 'nix' command
-      experimental-features = "nix-command flakes";
-      # Opinionated: disable global registry
-      flake-registry = "";
-      # Workaround for https://github.com/NixOS/nix/issues/9574
-      nix-path = config.nix.nixPath;
-
-      auto-optimise-store = true;
-      trusted-users = ["root" "@wheel"];
-    };
-    gc = {
-      # Perform garbage collection weekly to maintain low disk usage
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 1w";
-    };
-    # Opinionated: disable channels
-    channel.enable = false;
-
-    # Opinionated: make flake registry and nix path match flake inputs
-    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
-    nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
-  };
-
-  # FIXME: Add the rest of your current configuration
-
-  # TODO: Set your hostname
   networking.hostName = "titan";
   networking.hostId = "59561e29"; # head -c4 /dev/urandom | od -A none -t x4
 
-  i18n.defaultLocale = "en_GB.UTF-8";
-  console = {
-    keyMap = "de";
-  };
-
-  # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
-  users = {
-    mutableUsers = false;
-    users = {
-      # FIXME: Replace with your username
-      mkn = {
-        isNormalUser = true;
-        description = "Max";
-        uid = 1000;
-        group = "mkn";
-        hashedPasswordFile = config.age.secrets.hashedUserPassword.path;
-        openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
-        ];
-        # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
-        extraGroups = ["wheel" "networkmanager" "video"];
-      };
-      root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
-    };
-    groups = {
-      mkn = {
-        gid = 1000;
-      };
-    };
-  };
-  age.secrets.hashedUserPassword = {
-    file = "${inputs.mysecrets}/hashedUserPassword.age";
-  };
-  # This setups a SSH server. Very important if you're setting up a headless system.
-  # Feel free to remove if you don't need it.
   services.openssh = {
     enable = true;
     settings = {
-      # root user is used for remote deployment, so we need to allow it
       PermitRootLogin = "prohibit-password";
-      PasswordAuthentication = false;
-      X11Forwarding = true;
     };
   };
 
   environment.systemPackages = with pkgs; [
-    # nix and deployment tools
-    nil
     just
     hd-idle
     powertop
-    tmux
     smartmontools
     hdparm
   ];

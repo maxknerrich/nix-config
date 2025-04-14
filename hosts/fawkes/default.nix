@@ -8,8 +8,6 @@
   pkgs,
   ...
 }: {
-  time.timeZone = "Europe/Berlin";
-
   programs.nix-ld = {
     enable = true;
   };
@@ -25,26 +23,6 @@
 
   users.users.root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
 
-  services.openssh = {
-    enable = true;
-    ports = [69];
-    settings = {
-      # root user is used for remote deployment, so we need to allow it
-      PermitRootLogin = "prohibit-password";
-      PasswordAuthentication = false;
-      X11Forwarding = true;
-    };
-  };
-  nix = {
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 7d";
-    };
-    settings = {
-      experimental-features = ["nix-command" "flakes"];
-      trusted-users = ["root" "@wheel"];
-    };
-  };
   environment.systemPackages = with pkgs; [
     git
     wget
