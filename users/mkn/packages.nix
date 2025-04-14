@@ -2,6 +2,7 @@
   home.packages = with pkgs; [
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
+    devenv
 
     nnn # terminal file manager
 
@@ -27,7 +28,7 @@
     tree
     zstd
 
-    # nix related
+    # nix s
     #
     # it provides the command `nom` works just like `nix`
     # with more details log output
