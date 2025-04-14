@@ -5,36 +5,24 @@
 # https://github.com/nix-community/NixOS-WSL
 {
   config,
-  lib,
   pkgs,
   ...
 }: {
   time.timeZone = "Europe/Berlin";
 
-  imports = [
-    ./vscode.nix
-  ];
+  programs.nix-ld = {
+    enable = true;
+  };
 
   networking.hostName = "fawkes";
-  programs.zsh.enable = true;
+
   wsl = {
     enable = true;
     wslConf.automount.root = "/mnt";
-    wslConf.interop.appendWindowsPath = false;
-    wslConf.network.generateHosts = false;
     defaultUser = "mkn";
     startMenuLaunchers = true;
   };
-  users.users.mkn = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    extraGroups = [
-      "wheel"
-    ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN2tkxTzD2+lfM6QCxJwJFchIggPdzcZhQJjFTaRZvKg max.knerrich@outlook.com"
-    ];
-  };
+
   users.users.root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
 
   services.openssh = {
@@ -60,6 +48,9 @@
   environment.systemPackages = with pkgs; [
     git
     wget
+    nixd
+    nil
+    alejandra
   ];
 
   # This value determines the NixOS release from which the default
