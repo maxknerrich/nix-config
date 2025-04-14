@@ -2,7 +2,7 @@
   programs.git = {
     enable = true;
     userName = "Max Knerrich";
-    userEmail = "maxknerrich@outlook.com";
+    userEmail = "max.knerrich@outlook.com";
     extraConfig.init.defaultBranch = "main";
   };
 }
