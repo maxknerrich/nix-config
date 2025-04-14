@@ -1,0 +1,33 @@
+{
+	"nix.serverPath": "nil",
+	"nix.enableLanguageServer": true,
+	"nix.serverSettings": {
+		"nil": {
+			"formatting": {
+				"command": [
+					"alejandra"
+				],
+			},
+		},
+		// check https://github.com/nix-community/nixd/blob/main/nixd/docs/configuration.md for all nixd config
+		"nixd": {
+			"formatting": {
+				"command": [
+					"alejandra"
+				],
+			},
+			"nixpkgs": {
+				// For flake.
+				"expr": "import (builtins.getFlake \"/home/mkn/nix-config\").inputs.nixpkgs { }"
+			},
+			"options": {
+				// By default, this entry will be read from `import <nixpkgs> { }`.
+				// You can write arbitrary Nix expressions here, to produce valid "options" declaration result.
+				// Tip: for flake-based configuration, utilize `builtins.getFlake`
+				"nixos": {
+					"expr": "(builtins.getFlake \"/home/mkn/nix-config\").nixosConfigurations.fawkes.options",
+				},
+			},
+		}
+	}
+}
