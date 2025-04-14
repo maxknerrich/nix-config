@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   nix.settings.trusted-users = ["mkn"];
 
   age.identityPaths = ["/home/mkn/.ssh/id_ed25519"];
@@ -9,6 +13,7 @@
         isNormalUser = true;
         description = "Max";
         uid = 1000;
+        shell = pkgs.zsh;
         group = "mkn";
         hashedPasswordFile = config.age.secrets.hashedUserPassword.path;
         openssh.authorizedKeys.keys = [
