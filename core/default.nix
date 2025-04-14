@@ -12,6 +12,10 @@
     keyMap = "de";
   };
 
+  environment = {
+    shells = [pkgs.zsh];
+  };
+
   nix = let
     flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
