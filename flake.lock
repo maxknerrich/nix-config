@@ -166,11 +166,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1744637364,
-        "narHash": "sha256-ZVINTNMJS6W3fqPYV549DSmjYQW5I9ceKBl83FwPP7k=",
+        "lastModified": 1744820898,
+        "narHash": "sha256-gUldr3LtCm/OfEnbH6sFFlyyxqPMCsfMs2Ha+0fdPDs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "337541447773985f825512afd0f9821a975186be",
+        "rev": "7ede02c32a729db0d6340bdb41d10e73ec511ca0",
         "type": "github"
       },
       "original": {
@@ -182,10 +182,10 @@
     "mysecrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1743522641,
-        "narHash": "sha256-3Q4M6S4mSyvB3lwfaAZgNzleZQ9462tu8mUyUwSQSy4=",
+        "lastModified": 1744822260,
+        "narHash": "sha256-GyGiwF2HugiDlyYpmScEn3nqmvp7OmWM7VqEbfzSWIw=",
         "ref": "refs/heads/main",
-        "rev": "d86b31d76c71c9d32ab1fc6b444195de7cc04110",
+        "rev": "7db569d55d092b872073456ead1f6d3ce1940480",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/maxknerrich/nix-secrets.git"
@@ -289,11 +289,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1744640127,
-        "narHash": "sha256-qA+YpGHbL9wNOfBcbs2Z93kuLgs4n5EP3aObqgjLgnk=",
+        "lastModified": 1744818557,
+        "narHash": "sha256-lrJB+r6bLmIA2w+3TyzYk19vqDsfZKCtKxjw9lDS5qg=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "12aadc56720ab7be7301f3a539e1f7c828d9a6e0",
+        "rev": "8662e035a20d6e03adb48a56de7c8343b5623897",
         "type": "github"
       },
       "original": {

@@ -20,6 +20,7 @@
   services.xserver.desktopManager.cinnamon.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
 
+  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;

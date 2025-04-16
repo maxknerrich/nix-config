@@ -60,6 +60,7 @@
 
   services.openssh = {
     enable = lib.mkDefault true;
+    openFirewall = lib.mkDefault true;
     settings = {
       PasswordAuthentication = lib.mkDefault false;
       LoginGraceTime = 0;
