@@ -1,9 +1,12 @@
 {
   config,
   pgks,
+  inputs,
   ...
 }: {
   imports = [
+    inputs.disko.nixosModules.disko
+
     ./hardware-configuration.nix
     ./disko.nix
   ];
@@ -14,6 +17,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   services.xserver.enable = true;
+  services.xserver.desktopManager.cinnamon.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
   hardware.pulseaudio.enable = true;
 
   users.users.root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
