@@ -11,7 +11,7 @@
     ./disko.nix
   ];
 
-  networking.hostname = "blackjack";
+  networking.hostName = "blackjack";
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
