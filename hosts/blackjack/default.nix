@@ -19,7 +19,14 @@
   services.xserver.enable = true;
   services.xserver.desktopManager.cinnamon.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-  hardware.pulseaudio.enable = true;
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true; # PulseAudio compatibility
+    jack.enable = true; # JACK compatibility
+  };
 
   users.users.root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
 
