@@ -1,5 +1,10 @@
 # import & decrypt secrets in `mysecrets` in this module
-{inputs, ...}: {
+{
+  inputs,
+  lib,
+  config,
+  ...
+}: {
   # DIDN'T WORK CAUSE OF CIRCULAR DEPENDENCY
   # imports = [
   #   agenix.nixosModules.default
@@ -12,24 +17,31 @@
     "/etc/ssh/ssh_host_ed25519_key"
   ];
 
-  age.secrets."tgCredentials" = {
-    # whether secrets are symlinked to age.secrets.<name>.path
-    symlink = true;
-    # target path for decrypted file
-    # path = "/etc/titan"; gave an error
-    # encrypted file path
-    file = "${inputs.mysecrets}/tgCredentials.age"; # refer to ./xxx.age located in `mysecrets` repo
-    mode = "0400";
-    owner = "root";
-    group = "root";
-  };
-  age.secrets."hashedUserPassword" = {
-    file = "${inputs.mysecrets}/hashedUserPassword.age";
-  };
-  age.secrets."googleAppPassword" = {
-    file = "${inputs.mysecrets}/googleAppPassword.age";
-  };
-  age.secrets."fsPWD" = {
-    file = "${inputs.mysecrets}/fsPWD.age";
-  };
+  age.secrets = lib.mkMerge [
+    # Global secrets (available on all hosts)
+    {
+      "hashedUserPassword" = {
+        file = "${inputs.mysecrets}/hashedUserPassword.age";
+      };
+    }
+
+    # Titan-specific secrets
+    (lib.mkIf (config.networking.hostName == "titan") {
+      "tgCredentials" = {
+        symlink = true;
+        file = "${inputs.mysecrets}/tgCredentials.age";
+        mode = "0400";
+        owner = "root";
+        group = "root";
+      };
+
+      "googleAppPassword" = {
+        file = "${inputs.mysecrets}/googleAppPassword.age";
+      };
+
+      "fsPWD" = {
+        file = "${inputs.mysecrets}/fsPWD.age";
+      };
+    })
+  ];
 }
