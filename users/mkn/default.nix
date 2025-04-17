@@ -5,8 +5,6 @@
 }: {
   nix.settings.trusted-users = ["mkn"];
 
-  age.identityPaths = ["/home/mkn/.ssh/id_ed25519"];
-
   users = {
     users = {
       mkn = {
