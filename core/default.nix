@@ -54,7 +54,7 @@
 
   users.users = {
     root = {
-      initialHashedPassword = config.age.secrets.hashedUserPassword.path;
+      hashedPasswordFile = config.age.secrets.hashedUserPassword.path;
     };
   };
 
@@ -78,6 +78,12 @@
         type = "ed25519";
       }
     ];
+  };
+
+  networking.firewall = {
+    enable = lib.mkDefault true;
+    allowedTCPPorts = [69];
+    allowedUDPPorts = [69];
   };
 
   programs.git.enable = true;
