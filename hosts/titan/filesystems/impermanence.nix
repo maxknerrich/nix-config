@@ -3,16 +3,13 @@
   pkgs,
   ...
 }: {
-  imports = [
-    impermanence.nixosModules.impermanence
-  ];
-
   environment.systemPackages = [
     # `sudo ncdu -x /`
 
     pkgs.ncdu
   ];
 
+  boot.tmp.cleanOnBoot = true;
   fileSystems."/persistent".neededForBoot = true;
 
   # There are two ways to clear the root filesystem on every boot:
@@ -72,27 +69,9 @@
       "/etc/machine-id"
     ];
 
-    users.ryan = {
+    users.mkn = {
       directories = [
         "nix-config"
-
-        "tmp"
-
-        "Downloads"
-
-        "Music"
-
-        "Pictures"
-
-        "Documents"
-
-        "Videos"
-
-        {
-          directory = ".gnupg";
-
-          mode = "0700";
-        }
 
         {
           directory = ".ssh";
@@ -100,37 +79,10 @@
           mode = "0700";
         }
 
-        {
-          directory = ".aws";
-
-          mode = "0700";
-        }
-
-        {
-          directory = ".docker";
-
-          mode = "0700";
-        }
-
-        {
-          directory = ".kube";
-
-          mode = "0700";
-        }
-
-        ".bash_history"
-
         ".cache"
-
         ".config"
-
         ".local"
-
-        ".mozilla"
-
-        ".npm"
-
-        ".wakatime"
+        ".zplug"
       ];
 
       files = [
