@@ -39,6 +39,7 @@
     home-manager,
     agenix,
     disko,
+    impermanence,
     nixos-wsl,
     deploy-rs,
     ...
@@ -78,6 +79,7 @@
         modules = [
           agenix.nixosModules.default
           home-manager.nixosModules.home-manager
+          impermanence.nixosModules.impermanence
 
           ./core
 

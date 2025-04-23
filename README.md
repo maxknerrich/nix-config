@@ -27,7 +27,7 @@ ssh -A root@$NIXOS_HOST
 Partition and mount the boot/root drives using [disko](https://github.com/nix-community/disko)
 
 ```bash
-curl https://raw.githubusercontent.com/maxknerrich/nix-config/refs/heads/main/hosts/nixos/filesystems/disko.nix \
+curl https://raw.githubusercontent.com/maxknerrich/nix-config/refs/heads/main/hosts/titan/filesystems/disko.nix \
     -o /tmp/disko.nix
 ```
 Change disk ids if necessary
