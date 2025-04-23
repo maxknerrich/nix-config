@@ -52,12 +52,6 @@
     };
   };
 
-  users.users = {
-    root = {
-      hashedPasswordFile = config.age.secrets.hashedUserPassword.path;
-    };
-  };
-
   services.openssh = {
     enable = lib.mkDefault true;
     openFirewall = lib.mkDefault true;

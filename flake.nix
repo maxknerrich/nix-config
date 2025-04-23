@@ -22,6 +22,8 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    impermanence.url = "github:nix-community/impermanence";
+
     mysecrets = {
       url = "git+ssh://git@github.com/maxknerrich/nix-secrets.git?shallow=1";
       flake = false;
@@ -121,6 +123,7 @@
     deploy.nodes = {
       titan = {
         hostname = "titan.local.knerrich.tech";
+        sshOpts = ["-p" "69"];
         profiles.system = {
           user = "root";
           sshUser = "mkn";

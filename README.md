@@ -27,7 +27,7 @@ ssh -A root@$NIXOS_HOST
 Partition and mount the boot/root drives using [disko](https://github.com/nix-community/disko)
 
 ```bash
-curl https://raw.githubusercontent.com/maxknerrich/infrastructure/refs/heads/main/nixos/filesystems/disko.nix \
+curl https://raw.githubusercontent.com/maxknerrich/nix-config/refs/heads/main/hosts/nixos/filesystems/disko.nix \
     -o /tmp/disko.nix
 ```
 Change disk ids if necessary
@@ -48,11 +48,19 @@ After the command has run, your file system should have been formatted and mount
 mount | grep /mnt
 ```
 
+mkdir -p /mnt/etc/ssh
+
+ssh-keygen -t ed25519 -f /mnt/etc/ssh/ssh_host_ed25519_key -C "root@blackjack"
+ssh-keygen -q -t rsa -b 4096 -C "blackjack" -N "" -f /mnt/etc/ssh/ssh_host_rsa_key
+
+cat /mnt/etc/ssh/ssh_host_ed25519_key.pub
+Add to public key  secrets and reencrypt
+
 Clone this repository
 
 ```bash
 mkdir -p /mnt/etc/nixos
-git clone https://github.com/maxknerrich/infrastructure.git /mnt/etc/nixos
+git clone https://github.com/maxknerrich/nix-config.git /mnt/etc/nixos
 ```
 
 Install the system
@@ -67,6 +75,7 @@ nixos-install \
 Unmount the filesystems
 
 ```bash
+swapoff /dev/disk/by-id/ata-HFS256G39TND-N210A_FI68T001611209C5V-part2
 umount -Rl /mnt
 ```
 
@@ -79,3 +88,6 @@ Put config in home and symlink
 ```bash
 sudo ln -s ~/_infra /etc/nixos
 ```
+
+agenix on new system
+https://josephstahl.com/nix-for-macos-and-a-homelab-server/
