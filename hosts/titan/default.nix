@@ -133,9 +133,9 @@
 
   environment.sessionVariables.LIBVA_DRIVER_NAME = "i965";
 
-  services.cockpit = {
-    enable = true;
-  };
+  # services.cockpit = {
+  #   enable = true;
+  # };
   networking.firewall = {
     enable = false;
   };

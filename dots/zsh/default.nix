@@ -37,9 +37,11 @@
         ll = "exa -alh";
         tree = "exa --tree";
         cat = "bat";
+        fsusage = "sudo ncdu -x /";
+        tmmpfsFiles = "sudo fd --one-file-system --base-directory / --type f --hidden --exclude '{tmp,etc/passwd}'";
       };
 
-      initExtra = ''
+      initContent = ''
         # Cycle back in the suggestions menu using Shift+Tab
         bindkey '^[[Z' reverse-menu-complete
 
