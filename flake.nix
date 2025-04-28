@@ -141,6 +141,16 @@
           path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.fawkes;
         };
       };
+      blackjack = {
+        hostname = "192.168.2.40";
+        user = "root";
+        sshOpts = ["-p" "69"];
+        sshUser = "mkn";
+        interactiveSudo = true;
+        profiles.system = {
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.blackjack;
+        };
+      };
     };
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
   };

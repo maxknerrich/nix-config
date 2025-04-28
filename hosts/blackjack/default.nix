@@ -1,6 +1,6 @@
 {
   config,
-  pgks,
+  pkgs,
   inputs,
   ...
 }: {
@@ -16,11 +16,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  services.xserver.enable = true;
-  services.xserver.desktopManager.cinnamon.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-
   security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -28,6 +25,14 @@
     pulse.enable = true; # PulseAudio compatibility
     jack.enable = true; # JACK compatibility
   };
+
+  home-manager.users.mkn.imports = [
+    ./home.nix
+  ];
+
+  services.xserver.enable = true;
+  services.xserver.desktopManager.cinnamon.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
 
   users.users.root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
 
