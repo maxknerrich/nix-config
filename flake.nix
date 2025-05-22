@@ -121,6 +121,22 @@
           ./users/mkn
         ];
       };
+      pegasus = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {
+          inherit inputs outputs;
+        };
+        modules = [
+          agenix.nixosModules.default
+          home-manager.nixosModules.home-manager
+
+          ./core
+
+          ./secrets
+          ./hosts/pegasus
+          ./users/mkn
+        ];
+      };
     };
     deploy.nodes = {
       titan = {
@@ -149,6 +165,16 @@
         interactiveSudo = true;
         profiles.system = {
           path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.blackjack;
+        };
+      };
+      pegasus = {
+        hostname = "192.168.2.13";
+        user = "root";
+        sshOpts = ["-p" "69"];
+        sshUser = "mkn";
+        interactiveSudo = true;
+        profiles.system = {
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.pegasus;
         };
       };
     };
