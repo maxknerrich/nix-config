@@ -4,6 +4,8 @@
     # feel free to add your own or remove some of them
     devenv
 
+    _1password-cli
+
     nnn # terminal file manager
 
     # archives

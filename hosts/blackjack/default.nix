@@ -32,7 +32,27 @@
 
   services.xserver.enable = true;
   services.xserver.desktopManager.cinnamon.enable = true;
+  services.xserver.xkb.layout = "de";
   services.xserver.displayManager.lightdm.enable = true;
+
+  environment.cinnamon.excludePackages = [pkgs.power-profiles-daemon];
+  services.power-profiles-daemon.enable = false;
+  services.auto-cpufreq = {
+    enable = true;
+    settings = {
+      battery = {
+        governor = "powersave";
+        turbo = "never";
+        enable_thresholds = true;
+        start_threshold = 40;
+        end_threshold = 60;
+      };
+      charger = {
+        governor = "performance";
+        turbo = "auto";
+      };
+    };
+  };
 
   users.users.root.openssh.authorizedKeys.keys = config.users.users.mkn.openssh.authorizedKeys.keys;
 

@@ -142,7 +142,7 @@
         };
       };
       blackjack = {
-        hostname = "192.168.2.40";
+        hostname = "192.168.2.13";
         user = "root";
         sshOpts = ["-p" "69"];
         sshUser = "mkn";
