@@ -6,6 +6,7 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
+    backupFileExtension = "before-nix";
     sharedModules = [inputs.determinate.homeManagerModules.default]; # HM integration for Determinate Nix.
     extraSpecialArgs = {
       inherit inputs;

@@ -60,6 +60,9 @@
   "languages": {
     "Nix": {
       "tab_size": 2,
+      "language_servers": [
+        "nixd"
+      ],
       "formatter": {
         "external": {
           "command": "alejandra",
@@ -96,8 +99,7 @@
     "show_onboarding_banner": false,
     "show_project_items": false,
     "show_branch_name": false,
-    "show_sign_in": false,
-    "show_branch_icon": false
+    "show_sign_in": false
   },
   "status_bar": {
     "active_language_button": true
