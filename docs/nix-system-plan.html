@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nix system setup plan</title>
+  <style>
+    body { font: 16px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 2rem auto; max-width: 900px; padding: 0 1rem; color: #1f2328; }
+    h1, h2 { line-height: 1.2; }
+    h1 { margin-bottom: .25rem; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    pre { background: #f6f8fa; padding: 1rem; overflow: auto; border-radius: 8px; }
+    ul { padding-left: 1.4rem; }
+    .meta { color: #57606a; margin-top: 0; }
+    .note { border-left: 4px solid #0969da; padding: .5rem 1rem; background: #ddf4ff; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Nix system setup plan</h1>
+  <p class="meta">Shared plan for rebuilding Max’s Mac setup with Nix, nix-darwin, Determinate Nix, nix-homebrew, and Home Manager.</p>
+
+  <div class="note">
+    This is a plan only. Do not implement until explicitly asked.
+  </div>
+
+  <h2>Overall direction</h2>
+  <ul>
+    <li>Rewrite the failed scaffold and start fresh.</li>
+    <li>Use a notthebee-inspired layout with machines under <code>modules/machines</code>.</li>
+    <li>Use <code>flake-parts</code> for top-level flake structure.</li>
+    <li>Initialize a fresh local Git repo after implementation; no remote yet.</li>
+  </ul>
+
+  <h2>Flake inputs</h2>
+  <ul>
+    <li><code>nixpkgs</code>: <code>github:NixOS/nixpkgs/nixpkgs-unstable</code>.</li>
+    <li><code>home-manager</code>: rolling GitHub input, follows <code>nixpkgs</code>.</li>
+    <li><code>nix-darwin</code>: rolling GitHub input, follows <code>nixpkgs</code>.</li>
+    <li><code>determinate</code>: recommended FlakeHub URL, independent from local <code>nixpkgs</code>.</li>
+    <li><code>nix-homebrew</code>: minimal standard input.</li>
+    <li><code>treefmt-nix</code>: for <code>nix fmt</code> and formatting check.</li>
+    <li>No <code>nixpkgs-stable</code> for now.</li>
+  </ul>
+
+  <h2>Layout</h2>
+  <pre><code>flake.nix
+justfile
+README.md
+AGENTS.md
+modules/
+  formatting.nix
+  machines/
+    darwin/
+      default.nix
+      _common/
+        default.nix
+        home-manager.nix
+        homebrew.nix
+        nix.nix
+        users.nix
+      fawkes/
+        configuration.nix
+        system.nix
+    nixos/
+      default.nix
+  users/
+    mkn/
+      default.nix
+      home.nix
+      cli.nix
+      dots.nix
+      git.nix
+      dotfiles/
+        pi/agent/...
+        zed/...</code></pre>
+
+  <h2>Machine discovery</h2>
+  <ul>
+    <li>Darwin configs are auto-discovered from <code>modules/machines/darwin/*/configuration.nix</code>.</li>
+    <li>NixOS auto-discovery framework is included for future servers, initially empty.</li>
+    <li>Primary host is <code>fawkes</code>, <code>aarch64-darwin</code>.</li>
+  </ul>
+
+  <h2>Darwin and Nix</h2>
+  <ul>
+    <li>Use Determinate Nix compatibility module for nix-darwin.</li>
+    <li>Configure Darwin Nix settings through <code>determinateNix.customSettings</code>, not <code>nix.settings</code>.</li>
+    <li>Trusted users: <code>root</code> and <code>mkn</code>.</li>
+    <li>Enable flakes and <code>nix-command</code>.</li>
+    <li>Use <code>max-jobs = auto</code>, <code>cores = 0</code>, <code>keep-outputs = true</code>, <code>keep-derivations = true</code>.</li>
+    <li>Use Determinate automatic GC via <code>determinateNixd.garbageCollector.strategy = "automatic"</code>.</li>
+  </ul>
+
+  <h2>Homebrew</h2>
+  <ul>
+    <li>Install/manage Homebrew through <code>nix-homebrew</code>.</li>
+    <li>User: <code>mkn</code>; prefix: <code>/opt/homebrew</code>; no Rosetta.</li>
+    <li>Conservative cleanup: <code>cleanup = "none"</code>.</li>
+    <li>Enable Homebrew auto-update and upgrade on activation.</li>
+    <li>No custom taps and no global no-quarantine setting.</li>
+  </ul>
+
+  <h2>GUI apps</h2>
+  <p>GUI apps are installed with Homebrew casks where available. App preferences stay app-owned for now.</p>
+  <pre><code># Browsers
+zen
+tor-browser
+helium-browser
+
+# Development / terminal
+zed
+ghostty
+
+# Input / system utilities
+eurkey-next
+scroll-reverser
+stats
+raycast
+mole-app
+daisydisk
+pearcleaner
+
+# Creative / productivity
+figma
+affinity
+timemator
+obsidian
+
+# Media / communication
+spotify
+whatsapp
+
+# Games / backup / privacy
+prismlauncher
+kopiaui
+nordvpn</code></pre>
+  <ul>
+    <li>Photomator is managed through MAS with ID <code>1444636541</code>.</li>
+    <li>Install <code>mas</code> as a Homebrew formula.</li>
+  </ul>
+
+  <h2>Dock</h2>
+  <ul>
+    <li>Dock persistent apps: Zed, Zen, Ghostty, Timemator.</li>
+    <li>Set <code>show-recents = false</code>.</li>
+    <li>No custom activation step to restart Dock/Finder.</li>
+  </ul>
+
+  <h2>macOS defaults</h2>
+  <ul>
+    <li>Manage defaults in nix-darwin, not Home Manager.</li>
+    <li>Show file extensions, disable extension-change warning, show Finder status bar.</li>
+    <li>Enable tap-to-click.</li>
+    <li>Set keyboard repeat defaults.</li>
+    <li>No three-finger drag.</li>
+    <li>Enable Touch ID for sudo.</li>
+    <li>Set host/computer/local host name to <code>fawkes</code>.</li>
+    <li><code>system.stateVersion = 6</code>.</li>
+  </ul>
+
+  <h2>User and Home Manager</h2>
+  <ul>
+    <li>Primary user: <code>mkn</code>, home <code>/Users/mkn</code>.</li>
+    <li>Full name: Max Knerrich; email: <code>max@knerrich.com</code>.</li>
+    <li>Fish is the default login shell.</li>
+    <li>Home Manager is embedded in nix-darwin.</li>
+    <li>Home Manager state version: <code>26.05</code>.</li>
+    <li>Enable XDG and prefer <code>~/.config</code>.</li>
+    <li>Include Determinate’s Home Manager module.</li>
+  </ul>
+
+  <h2>CLI tools</h2>
+  <p>Use Home Manager modules when they exist, and <code>home.packages</code> otherwise.</p>
+  <ul>
+    <li><code>programs.fish</code>: aliases and Vite Plus env sourcing.</li>
+    <li><code>programs.bat</code>: modern <code>cat</code> replacement.</li>
+    <li><code>programs.eza</code>: modern <code>ls</code> replacement, fish integration.</li>
+    <li><code>programs.zoxide</code>: smarter <code>cd</code>, fish integration.</li>
+    <li><code>programs.ghostty</code>: config only; app installed by Homebrew.</li>
+    <li><code>programs.git</code>: identity/config.</li>
+    <li><code>programs.home-manager.enable = true</code>.</li>
+  </ul>
+  <pre><code># Plain packages without HM modules
+alejandra  # Nix formatter
+just       # repo command runner
+nixd       # Nix LSP
+tree       # simple directory tree view</code></pre>
+  <p>Fish aliases:</p>
+  <pre><code>ls = "eza"
+ll = "eza -la"
+la = "eza -a"
+cat = "bat --paging=never"</code></pre>
+
+  <h2>Formatting and validation</h2>
+  <ul>
+    <li>Use Alejandra as the repo formatter through <code>treefmt-nix</code>.</li>
+    <li><code>nix fmt</code> formats the repo.</li>
+    <li><code>nix flake check</code> stays lightweight, mainly formatting/buildability.</li>
+    <li>No dev shell, CI, <code>deadnix</code>, <code>statix</code>, or <code>nix-index</code> initially.</li>
+  </ul>
+
+  <h2>Just commands</h2>
+  <pre><code>fmt:      nix fmt
+check:    nix flake check
+build:    nix build .#darwinConfigurations.fawkes.system --no-link
+switch:   sudo -H darwin-rebuild switch --flake .#fawkes
+doctor:   just fmt; just check; just build</code></pre>
+
+  <h2>Dotfiles</h2>
+  <ul>
+    <li>Use mutable Home Manager out-of-store symlinks.</li>
+    <li>Repo path is hardcoded as <code>/Users/mkn/nix-config</code>.</li>
+    <li>Explicit symlink declarations only; no auto-linking whole trees.</li>
+    <li>Initially symlink only Pi and Zed dotfiles.</li>
+  </ul>
+
+  <h2>Pi</h2>
+  <ul>
+    <li>Do not install or update Pi through Nix.</li>
+    <li>Set <code>PI_CODING_AGENT_DIR=$XDG_CONFIG_HOME/pi/agent</code>.</li>
+    <li>Set <code>PI_TELEMETRY=0</code>; do not skip version checks.</li>
+    <li>Manage minimal repo-backed files: <code>AGENTS.md</code>, <code>settings.json</code>, <code>keybindings.json</code>, <code>prompts/</code>, <code>skills/</code>, <code>themes/</code>, <code>extensions/</code>.</li>
+    <li>Do not track sessions, package installs, auth, or runtime state.</li>
+  </ul>
+
+  <h2>Zed</h2>
+  <ul>
+    <li>Install Zed via Homebrew.</li>
+    <li>Seed <code>settings.json</code> and <code>keymap.json</code> from <code>~/nix-old/users/mkn/dotfiles/zed/</code>.</li>
+    <li>Do not include <code>tasks.json</code>.</li>
+    <li>Remove all Zed agent-related settings.</li>
+    <li>Keep non-agent preferences like theme, layout, telemetry disabled, terminal, and language settings.</li>
+    <li>Use Alejandra as external Nix formatter.</li>
+    <li>Use <code>nixd</code> explicitly as Nix LSP.</li>
+    <li>Symlink individual files only, not the whole Zed config directory.</li>
+  </ul>
+
+  <h2>Not included initially</h2>
+  <ul>
+    <li>SSH config and keys.</li>
+    <li>Secrets tooling such as agenix or sops-nix.</li>
+    <li>Fonts.</li>
+    <li>Login items / auto-start management.</li>
+    <li>App preference management for GUI apps other than the noted Ghostty/Zed exceptions.</li>
+    <li>Node/npm, since Node is managed via Vite Plus.</li>
+  </ul>
+
+  <h2>Repo docs</h2>
+  <ul>
+    <li>Brief <code>README.md</code> with bootstrap/switch commands.</li>
+    <li>Root <code>AGENTS.md</code> with short rules: run <code>just doctor</code>, no secrets, GUI apps via Homebrew, CLI via Nix/Home Manager.</li>
+    <li>Comments in Nix files should be short and human, only where helpful.</li>
+  </ul>
+</body>
+</html>
