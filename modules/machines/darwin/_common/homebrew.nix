@@ -35,6 +35,7 @@
       "mole-app"
       "daisydisk"
       "pearcleaner"
+      "lulu"
 
       # Creative and productivity
       "figma"
@@ -51,6 +52,7 @@
       "kopiaui"
       "nordvpn"
       "proton-pass"
+      "proton-drive"
     ];
     masApps.Photomator = 1444636541; # MAS-only photo editor.
   };
