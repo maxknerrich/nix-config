@@ -13,6 +13,7 @@
       # Development and shell helpers
       ccusage
       codex
+      gh
       herdr
       just
       mosh

@@ -27,7 +27,8 @@ sudo -H nix run nix-darwin -- switch --flake .#fawkes
 ## Daily commands
 
 ```sh
-just fmt
-just doctor
-just switch
+just switch   # Apply the current lock file.
+just update   # Update the lock file only.
+just upgrade  # Update, validate, and switch.
+just doctor   # Format, check, and build.
 ```
