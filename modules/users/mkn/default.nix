@@ -1,7 +1,9 @@
 {my, ...}: {
   imports = [
+    ./theme.nix
     ./home.nix
     ./cli.nix
+    ./host-banner.nix
     ./dots.nix
     ./git.nix
   ];
@@ -14,6 +16,7 @@
 
   xdg.enable = true;
   programs = {
+    hostBanner.enable = true;
     home-manager.enable = true;
     man.generateCaches = false;
   };

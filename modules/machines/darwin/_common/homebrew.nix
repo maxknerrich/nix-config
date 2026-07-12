@@ -9,13 +9,15 @@
 
   homebrew = {
     enable = true;
+    taps = builtins.attrNames config.nix-homebrew.taps;
     onActivation = {
       autoUpdate = true;
       upgrade = true;
-      cleanup = "none"; # Do not remove manually installed apps yet.
+      cleanup = "zap"; # Remove undeclared Homebrew packages and cask leftovers.
     };
     brews = [
       "mas" # Installs Mac App Store apps declared below.
+      "mole" # CLI Mac cleaner from mole.fit.
     ];
     casks = [
       # Browsers
@@ -26,13 +28,15 @@
       # Development and terminal
       "zed"
       "ghostty"
+      "t3-code"
+      "codex-app"
+      "codexbar"
 
       # Input and system utilities
       "eurkey-next"
       "scroll-reverser"
-      "stats"
+      "thaw"
       "raycast"
-      "mole-app"
       "daisydisk"
       "pearcleaner"
       "lulu"
@@ -42,6 +46,7 @@
       "affinity"
       "timemator"
       "obsidian"
+      "typewhisper"
 
       # Media and communication
       "spotify"
