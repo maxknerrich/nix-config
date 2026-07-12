@@ -1,4 +1,27 @@
-{theme, ...}: {
+{
+  lib,
+  pkgs,
+  theme,
+  ...
+}: {
+  home.packages = with pkgs;
+    [
+      # Nix tooling
+      alejandra
+      nixd
+
+      # Development and shell helpers
+      ccusage
+      codex
+      herdr
+      just
+      mosh
+      tree
+    ]
+    ++ lib.optionals stdenv.isDarwin [
+      yubikey-manager
+    ];
+
   programs = {
     fish = {
       enable = true;
@@ -22,6 +45,7 @@
         end
       '';
     };
+
     starship = {
       enable = true;
       enableFishIntegration = true;
@@ -76,6 +100,7 @@
         };
       };
     };
+
     bat = {
       enable = true;
       config = {
@@ -91,15 +116,6 @@
     zoxide = {
       enable = true;
       enableFishIntegration = true;
-    };
-    ghostty = {
-      enable = true;
-      package = null; # App is installed by Homebrew; HM writes config only.
-      settings = {
-        theme = theme.apps.ghostty;
-        command = "/etc/profiles/per-user/mkn/bin/fish";
-        macos-option-as-alt = "left";
-      };
     };
   };
 }

@@ -22,10 +22,7 @@
   outputs = inputs @ {flake-parts, ...}:
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["aarch64-darwin"];
-      imports = [
-        ./modules/machines/darwin
-        ./modules/machines/nixos
-      ];
+      imports = [./modules/machines/darwin];
 
       perSystem = {pkgs, ...}: {
         # Keep nix fmt lightweight without a separate treefmt module.

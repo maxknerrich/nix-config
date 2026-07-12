@@ -1,11 +1,10 @@
 {my, ...}: {
   imports = [
     ./theme.nix
-    ./home.nix
-    ./cli.nix
+    ./terminal.nix
     ./host-banner.nix
-    ./dots.nix
     ./git.nix
+    ./pi.nix
   ];
 
   home = {
@@ -16,7 +15,6 @@
 
   xdg.enable = true;
   programs = {
-    hostBanner.enable = true;
     home-manager.enable = true;
     man.generateCaches = false;
   };

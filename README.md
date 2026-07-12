@@ -17,6 +17,13 @@ If needed for the first run:
 sudo -H nix run nix-darwin -- switch --flake .#fawkes
 ```
 
+## Configuration
+
+- Shared shell and CLI packages: `modules/users/mkn/terminal.nix`
+- Focused user modules: `git.nix`, `theme.nix`, `host-banner.nix`, and `pi.nix`
+- `fawkes` GUI applications: `modules/machines/darwin/fawkes/apps.nix`
+- Host-specific macOS settings: `modules/machines/darwin/fawkes/system.nix`
+
 ## Daily commands
 
 ```sh

@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   options.my = {
     username = lib.mkOption {type = lib.types.str;};
     fullName = lib.mkOption {type = lib.types.str;};
@@ -15,7 +19,7 @@
       customSettings = {
         trusted-users = [
           "root"
-          "mkn"
+          config.my.username
         ];
         experimental-features = [
           "nix-command"

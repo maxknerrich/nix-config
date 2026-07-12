@@ -1,6 +1,7 @@
 {config, ...}: {
   imports = [
     ../_common
+    ./apps.nix
     ./system.nix
   ];
 
