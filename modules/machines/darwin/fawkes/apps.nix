@@ -1,10 +1,18 @@
-{config, ...}: let
+{
+  config,
+  inputs,
+  ...
+}: let
   username = config.my.username;
 in {
   nix-homebrew = {
     enable = true;
     user = config.my.username;
     enableRosetta = false;
+    taps = {
+      "homebrew/homebrew-core" = inputs.homebrew-core;
+      "homebrew/homebrew-cask" = inputs.homebrew-cask;
+    };
     mutableTaps = false;
     autoMigrate = true;
   };
@@ -13,14 +21,14 @@ in {
     enable = true;
     taps = builtins.attrNames config.nix-homebrew.taps;
     onActivation = {
-      autoUpdate = true;
+      autoUpdate = false; # Tap versions are pinned by flake.lock.
       upgrade = true;
       cleanup = "zap";
     };
 
     brews = [
       "mas" # Required for Mac App Store applications below.
-      "mole"
+      "ykman" # Nix libffi is incompatible with the current macOS dyld.
     ];
 
     casks = [
@@ -41,8 +49,7 @@ in {
       "scroll-reverser"
       "thaw"
       "raycast"
-      "daisydisk"
-      "pearcleaner"
+      "mole-app"
       "lulu"
 
       # Creative and productivity
@@ -50,7 +57,7 @@ in {
       "affinity"
       "timemator"
       "obsidian"
-      "typewhisper"
+      "kitlangton-hex"
 
       # Media and communication
       "spotify"
@@ -60,11 +67,15 @@ in {
       "prismlauncher"
       "kopiaui"
       "nordvpn"
+      "tailscale-app"
       "proton-pass"
       "proton-drive"
     ];
 
-    masApps.Photomator = 1444636541;
+    masApps = {
+      Photomator = 1444636541;
+      WireGuard = 1451685025;
+    };
   };
 
   home-manager.users.${username} = {
@@ -73,7 +84,9 @@ in {
     ...
   }: let
     repo = "${config.home.homeDirectory}/nix-config";
+    protonDrive = "${config.home.homeDirectory}/Library/CloudStorage/ProtonDrive-max@knerrich.com-folder";
     link = path: config.lib.file.mkOutOfStoreSymlink "${repo}/${path}";
+    protonDriveLink = name: config.lib.file.mkOutOfStoreSymlink "${protonDrive}/${name}";
   in {
     services.proton-pass-agent = {
       enable = true;
@@ -97,6 +110,11 @@ in {
     home.file = {
       ".config/zed/settings.json".source = link "modules/users/mkn/dotfiles/zed/settings.json";
       ".config/zed/keymap.json".source = link "modules/users/mkn/dotfiles/zed/keymap.json";
+
+      "[2] - Personal".source = protonDriveLink "[2] - Personal";
+      "[3] - Work".source = protonDriveLink "[3] - Work";
+      "[4] - Money & Tax".source = protonDriveLink "[4] - Money & Tax";
+      "[9] - ARCHIVE".source = protonDriveLink "[9] - ARCHIVE";
     };
   };
 }
