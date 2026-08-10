@@ -55,6 +55,14 @@
         AppleActionOnDoubleClick = "Fill";
       };
       "com.apple.finder".FXEnableRemoveFromICloudDriveWarning = false;
+      "com.apple.mail".NSUserKeyEquivalents = {
+        # Raycast Hyper emits Control-Option-Command.
+        Archive = "@~^e";
+        "Move to Junk" = "@~^j";
+        Reply = "@~^r";
+        "Reply All" = "@~^a";
+        Forward = "@~^f";
+      };
     };
   };
 
