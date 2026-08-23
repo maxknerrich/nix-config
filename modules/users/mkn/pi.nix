@@ -11,7 +11,8 @@ in {
       ".pi/agent/settings.json".source = link "modules/users/mkn/dotfiles/pi/agent/settings.json";
       ".pi/agent/keybindings.json".source = link "modules/users/mkn/dotfiles/pi/agent/keybindings.json";
       ".pi/agent/prompts".source = link "modules/users/mkn/dotfiles/pi/agent/prompts";
-      ".pi/agent/skills".source = link "modules/users/mkn/dotfiles/pi/agent/skills";
+      ".agents".source = link "modules/users/mkn/dotfiles/.agents";
+      ".pi/agent/skills".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.agents/skills";
       ".pi/agent/themes".source = link "modules/users/mkn/dotfiles/pi/agent/themes";
       ".pi/agent/extensions".source = link "modules/users/mkn/dotfiles/pi/agent/extensions";
     };
