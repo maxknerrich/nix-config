@@ -16,6 +16,7 @@ in {
     file =
       {
         ".pi/agent/settings.json".source = link "modules/users/mkn/dotfiles/pi/agent/settings.json";
+        ".pi/agent/cloak.json".source = link "modules/users/mkn/dotfiles/pi/agent/cloak.json";
         ".pi/agent/keybindings.json".source = link "modules/users/mkn/dotfiles/pi/agent/keybindings.json";
         ".pi/agent/prompts".source = link "modules/users/mkn/dotfiles/pi/agent/prompts";
         ".agents".source = link "modules/users/mkn/dotfiles/.agents";
