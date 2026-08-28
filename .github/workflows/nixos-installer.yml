@@ -84,6 +84,7 @@ jobs:
 
       - name: Publish rolling release
         env:
+          GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: nixos-installer-latest
         run: |
