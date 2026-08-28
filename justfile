@@ -7,6 +7,10 @@ check:
 build:
     nix build .#darwinConfigurations.fawkes.system --no-link
 
+# Build the headless x86_64 NixOS installer ISO (requires a Linux builder).
+iso:
+    nix build .#nixosConfigurations.installer.config.system.build.isoImage
+
 # Apply the currently locked configuration.
 switch:
     sudo -H darwin-rebuild switch --flake .#fawkes
