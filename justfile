@@ -9,7 +9,7 @@ build:
 
 # Build the headless x86_64 NixOS installer ISO (requires a Linux builder).
 iso:
-    nix build .#nixosConfigurations.installer.config.system.build.isoImage
+    nix build ./nixos-installer#nixosConfigurations.installer.config.system.build.isoImage
 
 # Apply the currently locked configuration.
 switch:
