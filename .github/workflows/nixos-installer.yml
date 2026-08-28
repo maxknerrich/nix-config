@@ -4,16 +4,12 @@ on:
   pull_request:
     paths:
       - nixos-installer/**
-      - flake.nix
-      - flake.lock
       - .github/workflows/nixos-installer.yml
   push:
     branches:
       - main
     paths:
       - nixos-installer/**
-      - flake.nix
-      - flake.lock
       - .github/workflows/nixos-installer.yml
   workflow_dispatch:
 
@@ -42,7 +38,7 @@ jobs:
           nix build \
             --print-build-logs \
             --out-link result \
-            .#nixosConfigurations.installer.config.system.build.isoImage
+            ./nixos-installer#nixosConfigurations.installer.config.system.build.isoImage
 
       - name: Prepare release assets
         run: |
@@ -88,6 +84,7 @@ jobs:
 
       - name: Publish rolling release
         env:
+          GH_REPO: ${{ github.repository }}
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: nixos-installer-latest
         run: |
