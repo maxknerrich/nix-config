@@ -3,7 +3,27 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        darwin.follows = "nix-darwin";
+        home-manager.follows = "home-manager";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -31,8 +51,14 @@
 
   outputs = inputs @ {flake-parts, ...}:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["aarch64-darwin"];
-      imports = [./modules/machines/darwin];
+      systems = [
+        "aarch64-darwin"
+        "x86_64-linux"
+      ];
+      imports = [
+        ./modules/machines/darwin
+        ./modules/machines/nixos
+      ];
 
       perSystem = {pkgs, ...}: {
         # Keep nix fmt lightweight without a separate treefmt module.
