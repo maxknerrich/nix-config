@@ -1,4 +1,5 @@
 {
+  inputs,
   lib,
   pkgs,
   theme,
@@ -39,6 +40,7 @@ in {
   home.packages = with pkgs; [
     # Nix tooling
     alejandra
+    inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
     nixd
 
     # Development and shell helpers
