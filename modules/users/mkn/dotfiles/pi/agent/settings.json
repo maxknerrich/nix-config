@@ -6,5 +6,12 @@
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
   "doubleEscapeAction": "tree",
-  "treeFilterMode": "default"
+  "treeFilterMode": "default",
+  "enabledModels": [
+    "openai-codex/gpt-5.6-sol",
+    "openai-codex/gpt-5.6-luna",
+    "openrouter/moonshotai/kimi-k2.5",
+    "openrouter/moonshotai/kimi-k3",
+    "openrouter/z-ai/glm-5.3-flash"
+  ]
 }
