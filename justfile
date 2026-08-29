@@ -7,7 +7,18 @@ check:
     nix flake check ./nixos-installer --all-systems --no-build
 
 shellcheck:
-    nix shell --inputs-from . nixpkgs#shellcheck --command shellcheck scripts/install-nixos.sh scripts/unlock-initrd.sh
+    nix shell --inputs-from . nixpkgs#shellcheck --command shellcheck .githooks/pre-commit .githooks/pre-push scripts/install-nixos.sh scripts/unlock-initrd.sh
+
+# Run non-mutating checks used before pushing.
+verify:
+    just --fmt --check
+    nix fmt -- --check .
+    just shellcheck
+    just check
+
+# Enable the repository's Git hooks for this clone.
+hooks:
+    git config core.hooksPath .githooks
 
 build:
     nix build .#darwinConfigurations.fawkes.system --no-link
@@ -44,8 +55,6 @@ upgrade:
     just switch
 
 doctor:
-    just --fmt --check
     just fmt
-    just shellcheck
-    just check
+    just verify
     just build

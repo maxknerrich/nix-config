@@ -3,8 +3,4 @@
 /result-*
 .direnv/
 .envrc
-
-docs/kronos-install-wrapper.html
-docs/kronos.md
-docs/kronos/compression.md
-docs/matt-pocock-skills-ranking.html
+TODO.md
