@@ -21,17 +21,16 @@ in {
     nftables.enable = true;
     firewall = {
       enable = true;
-      backend = "nftables";
       extraInputRules = ''
         iifname "enp2s0" ip saddr 192.168.2.0/24 tcp dport 69 accept
-        iifname "enp2s0" ip saddr 192.168.2.0/24 udp dport 60000-60010 accept
+        iifname "enp2s0" ip saddr 192.168.2.0/24 udp dport 60000-61000 accept
       '';
       interfaces.tailscale0 = {
         allowedTCPPorts = [69];
         allowedUDPPortRanges = [
           {
             from = 60000;
-            to = 60010;
+            to = 61000;
           }
         ];
       };

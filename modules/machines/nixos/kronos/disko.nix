@@ -6,6 +6,7 @@
 
   luksPasswordFile = "/tmp/kronos-luks.key";
   luksSettings = {
+    # Cache one passphrase across all five LUKS containers.
     crypttabExtraOpts = ["password-cache=yes"];
   };
   luksSsdSettings =
@@ -18,6 +19,7 @@
     "compress-force=zstd:3"
     "noatime"
     "degraded"
+    "x-systemd.device-timeout=0"
   ];
   hddMountOptions = [
     "compress=zstd:3"

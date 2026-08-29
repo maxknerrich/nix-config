@@ -30,9 +30,9 @@ The `nixos-installer/` configuration builds a minimal `x86_64-linux` ISO with
 DHCP, SSH key authentication for the `nixos` user, flakes, disko, and recovery
 tools. Disk formatting and installation remain manual.
 
-Changes to the installer or its flake inputs publish a new ISO to the rolling
-[`nixos-installer-latest`](https://github.com/maxknerrich/nix-config/releases/tag/nixos-installer-latest)
-GitHub release. Build it locally on Linux or with a configured Linux builder:
+Changes to the installer or its flake inputs publish a verified, immutable
+[GitHub release](https://github.com/maxknerrich/nix-config/releases/latest).
+Build it locally on Linux or with a configured Linux builder:
 
 ```sh
 just iso
