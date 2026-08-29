@@ -50,6 +50,7 @@
     hideMounts = true;
     directories = [
       "/var/lib/nixos"
+      "/var/lib/systemd/timers"
       "/var/lib/tailscale"
       "/var/log"
     ];
