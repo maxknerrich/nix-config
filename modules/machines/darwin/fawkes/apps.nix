@@ -57,7 +57,7 @@ in {
       "affinity"
       "timemator"
       "obsidian"
-      "kitlangton-hex"
+      #"kitlangton-hex"
 
       # Media and communication
       "spotify"
@@ -73,6 +73,7 @@ in {
     ];
 
     masApps = {
+      "DaVinci Resolve" = 571213070;
       Photomator = 1444636541;
       WireGuard = 1451685025;
     };
