@@ -13,10 +13,13 @@
     enable = true;
     openFirewall = true;
     settings = {
-      AllowUsers = ["nixos"];
+      AllowUsers = [
+        "nixos"
+        "root"
+      ];
       KbdInteractiveAuthentication = false;
       PasswordAuthentication = false;
-      PermitRootLogin = "no";
+      PermitRootLogin = "prohibit-password";
     };
   };
 
