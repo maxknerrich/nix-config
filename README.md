@@ -44,6 +44,7 @@ from DHCP or the local console and connect with `ssh nixos@<installer-ip>`.
 ## Daily commands
 
 ```sh
+just hooks    # Enable formatting and validation Git hooks for this clone.
 just switch   # Apply the current lock file.
 just update   # Update the lock file only.
 just upgrade  # Update, validate, and switch.
