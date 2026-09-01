@@ -13,5 +13,8 @@
     "openrouter/moonshotai/kimi-k2.5",
     "openrouter/moonshotai/kimi-k3",
     "openrouter/z-ai/glm-5.3-flash"
+  ],
+  "packages": [
+    "npm:pi-web-search"
   ]
 }
