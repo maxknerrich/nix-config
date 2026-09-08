@@ -1,20 +1,19 @@
 {
-  "telemetry": false,
-  "lastChangelogVersion": "0.82.1",
-  "theme": "dark",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "high",
-  "doubleEscapeAction": "tree",
-  "treeFilterMode": "default",
-  "enabledModels": [
-    "openai-codex/gpt-5.6-sol",
-    "openai-codex/gpt-5.6-luna",
-    "openrouter/moonshotai/kimi-k2.5",
-    "openrouter/moonshotai/kimi-k3",
-    "openrouter/z-ai/glm-5.3-flash"
-  ],
-  "packages": [
-    "npm:pi-web-search"
-  ]
+	"telemetry": false,
+	"lastChangelogVersion": "0.85.1",
+	"theme": "dark",
+	"defaultProvider": "openai-codex",
+	"defaultModel": "gpt-6-astra",
+	"defaultThinkingLevel": "high",
+	"doubleEscapeAction": "tree",
+	"treeFilterMode": "default",
+	"enabledModels": [
+		"openai-codex/gpt-6-astra",
+		"openai-codex/gpt-5.6-sol",
+		"openai-codex/gpt-5.6-luna",
+		"openrouter/moonshotai/kimi-k2.5",
+		"openrouter/moonshotai/kimi-k3",
+		"openrouter/z-ai/glm-5.3-flash"
+	],
+	"packages": ["npm:pi-web-search"]
 }
