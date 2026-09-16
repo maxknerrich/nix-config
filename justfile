@@ -12,7 +12,7 @@ shellcheck:
 # Run non-mutating checks used before pushing.
 verify:
     just --fmt --check
-    nix fmt -- --check .
+    git ls-files -z -- '*.nix' | xargs -0 nix fmt -- --check
     just shellcheck
     just check
 
