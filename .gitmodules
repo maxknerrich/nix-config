@@ -1,0 +1,3 @@
+[submodule "t3code"]
+	path = t3code
+	url = git@github.com:maxknerrich/t3code.git

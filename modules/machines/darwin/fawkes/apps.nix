@@ -98,6 +98,20 @@ in {
     };
     launchd.agents.proton-pass-agent.domain = "gui";
 
+    # Home Manager sets SSH_AUTH_SOCK in shells; GUI apps need launchd's value.
+    launchd.agents.proton-pass-environment = {
+      enable = true;
+      domain = "gui";
+      config = {
+        RunAtLoad = true;
+        ProgramArguments = [
+          "/bin/sh"
+          "-c"
+          ''/bin/launchctl setenv SSH_AUTH_SOCK "$(/usr/bin/getconf DARWIN_USER_TEMP_DIR)/${config.services.proton-pass-agent.socket}"''
+        ];
+      };
+    };
+
     programs.ghostty = {
       enable = true;
       package = null; # App is installed by Homebrew; HM writes config only.

@@ -27,6 +27,7 @@ import {
 } from "@earendil-works/pi-coding-agent";
 import type { Cause, Scope } from "effect";
 import { Effect, Queue, Stream } from "effect";
+import { childModelOptions } from "../../../shared/child-model-options.ts";
 import type { SubagentBackend, SubagentSession } from "../backend.ts";
 import type {
   SpawnTask,
@@ -348,7 +349,7 @@ const makePiSession = (
           sessionManager: SessionManager.create(task.cwd),
           settingsManager,
           resourceLoader: loader,
-          modelRegistry: registry,
+          ...childModelOptions(registry),
           model,
           thinkingLevel,
           excludeTools: [...CHILD_EXCLUDED_TOOL_NAMES],

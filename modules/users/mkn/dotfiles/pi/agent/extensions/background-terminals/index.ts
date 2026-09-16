@@ -112,7 +112,7 @@ export default function (pi: ExtensionAPI) {
         return { render: () => [line], invalidate: () => {} };
       });
     } catch {
-      // UI may be unavailable (print/RPC modes or teardown).
+      // TUI may be unavailable during teardown.
     }
   };
 
@@ -170,7 +170,7 @@ export default function (pi: ExtensionAPI) {
 
   pi.on("session_start", (_event, ctx) => {
     sessionContext = ctx;
-    if (ctx.hasUI) ui = ctx.ui;
+    if (ctx.mode === "tui") ui = ctx.ui;
   });
 
   // Drain deferred results when the agent settles: together with the

@@ -732,11 +732,16 @@ export default function (pi: ExtensionAPI) {
     description: "List, inspect, and take over subagents",
     handler: async (_args, ctx) => {
       if (ctx.mode !== "tui") {
-        if (ctx.hasUI)
+        if (ctx.hasUI) {
+          const manager = await getManager();
+          const subs = manager.view.list().filter(isModelVisible);
           ctx.ui.notify(
-            "Subagent takeover is only available in the TUI",
-            "error",
+            subs.length === 0
+              ? "No subagents."
+              : subs.map((snap) => describeSubagent(snap)).join("\n"),
+            "info",
           );
+        }
         return;
       }
       const manager = await getManager();

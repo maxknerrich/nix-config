@@ -24,6 +24,7 @@ import {
   type ToolDefinition,
 } from "@earendil-works/pi-coding-agent";
 import { Type, type TSchema } from "typebox";
+import { childModelOptions } from "../shared/child-model-options.ts";
 import {
   bindChildSessionExtensions,
   childToolPolicy,
@@ -448,7 +449,7 @@ export async function runAgent(
       ...(options.thinkingLevel
         ? { thinkingLevel: options.thinkingLevel }
         : {}),
-      modelRegistry: options.modelRegistry,
+      ...childModelOptions(options.modelRegistry),
       resourceLoader: options.loader,
       settingsManager: options.settingsManager,
       sessionManager: SessionManager.inMemory(options.cwd),

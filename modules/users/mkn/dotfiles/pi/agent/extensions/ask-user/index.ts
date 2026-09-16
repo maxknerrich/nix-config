@@ -5,6 +5,7 @@
  * - Popup UI: arrow keys or number keys to pick, Enter to confirm
  * - "Write my own answer" opens an inline editor (Esc returns to the options)
  * - Esc on the options dismisses the question (the model is told you declined)
+ * - RPC uses standard select/input dialogs with the same result shape
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
@@ -130,7 +131,7 @@ export default function askUser(pi: ExtensionAPI) {
         );
       }
 
-      if (ctx.mode !== "tui") {
+      if (ctx.mode !== "tui" && ctx.mode !== "rpc") {
         return reply(buildAskUserResultMessage({ kind: "no-ui" }));
       }
 
@@ -142,6 +143,34 @@ export default function askUser(pi: ExtensionAPI) {
         ...params.options,
         { label: "Write my own answer…", isOther: true },
       ];
+
+      const showRpcQuestion = async (
+        uiSignal: AbortSignal,
+      ): Promise<SelectionResult> => {
+        // Numbered values distinguish duplicate labels and the custom option.
+        const choices = allOptions.map(
+          (option, index) =>
+            `${index + 1}. ${option.label}${option.description ? `: ${option.description}` : ""}`,
+        );
+        const choice = await ctx.ui.select(params.question, choices, {
+          signal: uiSignal,
+        });
+        if (uiSignal.aborted || choice === undefined) return null;
+        const index = choices.indexOf(choice);
+        const selected = allOptions[index];
+        if (!selected) throw new Error("ask_user received an unknown choice.");
+        if (!selected.isOther) {
+          return { answer: selected.label, wasCustom: false, index: index + 1 };
+        }
+        const answer = (
+          await ctx.ui.input(params.question, "Write my own answer…", {
+            signal: uiSignal,
+          })
+        )?.trim();
+        return !uiSignal.aborted && answer
+          ? { answer, wasCustom: true }
+          : null;
+      };
 
       const showQuestion = (uiSignal: AbortSignal) =>
         ctx.ui.custom<SelectionResult>((tui, theme, _kb, done) => {
@@ -330,7 +359,7 @@ export default function askUser(pi: ExtensionAPI) {
         });
 
       const uiExit = await Effect.runPromiseExit(
-        Effect.tryPromise(showQuestion),
+        Effect.tryPromise(ctx.mode === "rpc" ? showRpcQuestion : showQuestion),
         signal ? { signal } : undefined,
       );
 

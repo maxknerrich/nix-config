@@ -125,6 +125,12 @@ const WorkflowParams = Type.Object({
 
 type WorkflowInput = Static<typeof WorkflowParams>;
 
+/** RPC completion metadata, correlated with the background launch result. */
+export interface WorkflowResultDetails {
+  runId: string;
+  status: Exclude<WorkflowDetails["status"], "running">;
+}
+
 function errorText(error: unknown): string {
   return (error instanceof Error ? error.message : String(error)).slice(
     0,
@@ -287,7 +293,7 @@ export default function workflows(pi: ExtensionAPI) {
   };
 
   pi.on("session_start", (_event, ctx) => {
-    if (ctx.hasUI) lastUi = ctx.ui;
+    if (ctx.mode === "tui") lastUi = ctx.ui;
     updateIndicator();
   });
 
@@ -353,14 +359,7 @@ export default function workflows(pi: ExtensionAPI) {
         (r) =>
           `${r.active ? "* " : "  "}${r.runId}  ${r.status}  ${r.name ?? ""}  ${r.done}/${r.total}`,
       );
-      if (!ctx.hasUI) {
-        ctx.ui.notify(labels.join("\n"), "info");
-        return;
-      }
-      const choice = await ctx.ui.select("Workflow runs", labels);
-      if (!choice) return;
-      const run = runs[labels.indexOf(choice)];
-      if (run) ctx.ui.notify(runDetailText(run, activeDetails()), "info");
+      ctx.ui.notify(labels.join("\n"), "info");
     },
   });
 
@@ -426,8 +425,8 @@ export default function workflows(pi: ExtensionAPI) {
           projectTrusted,
         );
 
-      // Throttled progress: tool-block updates when blocking. Background
-      // runs are covered by the below-editor indicator and /workflows.
+      // Tool-block updates are blocking-only. Background RPC phases use
+      // custom messages below; TUI uses the indicator and /workflows.
       let emitTimer: ReturnType<typeof setTimeout> | undefined;
       let lastEmit = 0;
       const flush = () => {
@@ -454,6 +453,22 @@ export default function workflows(pi: ExtensionAPI) {
 
       const phaseFn = (title: unknown) => {
         const text = String(title);
+        if (background && ctx.mode === "rpc" && details.currentPhase !== text) {
+          pi.sendMessage(
+            {
+              customType: "workflow-progress",
+              content: `Workflow ${runId}: ${text.slice(0, 160)}`,
+              display: false,
+              details: {
+                runId,
+                name: details.name,
+                status: "running",
+                currentPhase: text.slice(0, 160),
+              },
+            },
+            { triggerTurn: false },
+          );
+        }
         details.currentPhase = text;
         if (!details.phases.some((p) => p.title === text))
           details.phases.push({ title: text });
@@ -675,7 +690,7 @@ export default function workflows(pi: ExtensionAPI) {
       activeRuns.set(runId, activeRun);
       const completion = runScript();
       activeRun.completion = completion;
-      if (ctx.hasUI) lastUi = ctx.ui;
+      if (ctx.mode === "tui") lastUi = ctx.ui;
       updateIndicator();
 
       if (background) {
@@ -690,14 +705,29 @@ export default function workflows(pi: ExtensionAPI) {
             recordSettledRun(details.status);
             updateIndicator();
             try {
-              pi.sendUserMessage(
-                buildBackgroundWorkflowFollowUp({
-                  runId,
-                  status: details.status,
-                  result: buildWorkflowResultMessage(details, runDir),
-                }),
-                { deliverAs: "followUp" },
-              );
+              const content = buildBackgroundWorkflowFollowUp({
+                runId,
+                status: details.status,
+                result: buildWorkflowResultMessage(details, runDir),
+              });
+              if (ctx.mode === "rpc") {
+                if (details.status === "running") {
+                  throw new Error(
+                    "Workflow completion requires a terminal status",
+                  );
+                }
+                pi.sendMessage<WorkflowResultDetails>(
+                  {
+                    customType: "workflow-result",
+                    content,
+                    display: true,
+                    details: { runId, status: details.status },
+                  },
+                  { triggerTurn: true, deliverAs: "followUp" },
+                );
+              } else {
+                pi.sendUserMessage(content, { deliverAs: "followUp" });
+              }
             } catch {
               // Session may be shutting down.
             }
