@@ -56,8 +56,8 @@
         "x86_64-linux"
       ];
       imports = [
-        ./modules/machines/darwin
-        ./modules/machines/nixos
+        ./hosts/darwin
+        ./hosts/nixos
       ];
 
       perSystem = {pkgs, ...}: {

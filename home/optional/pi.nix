@@ -6,7 +6,7 @@
     map (name: {
       name = ".pi/agent/${name}";
       value.source = sharedAgentLink name;
-    }) (builtins.attrNames (builtins.readDir ./dotfiles/.agents))
+    }) (builtins.attrNames (builtins.readDir ../../modules/users/mkn/dotfiles/.agents))
   );
 in {
   home = {

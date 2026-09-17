@@ -12,9 +12,6 @@
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
       modules = [
-        inputs.agenix.nixosModules.default
-        inputs.disko.nixosModules.disko
-        inputs.impermanence.nixosModules.impermanence
         (./. + "/${name}/configuration.nix")
       ];
     };

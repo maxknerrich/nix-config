@@ -1,10 +1,8 @@
 {my, ...}: {
   imports = [
     ./theme.nix
-    ./terminal.nix
-    ./host-banner.nix
-    ./git.nix
-    ./pi.nix
+    ./shell.nix
+    ./prompt.nix
   ];
 
   home = {

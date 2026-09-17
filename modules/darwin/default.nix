@@ -4,7 +4,11 @@
   pkgs,
   ...
 }: {
-  imports = [./nix.nix];
+  imports = [
+    ../common/identity.nix
+    ./nix.nix
+    inputs.home-manager.darwinModules.home-manager
+  ];
 
   users = {
     knownUsers = [config.my.username];
@@ -27,6 +31,5 @@
       inherit inputs;
       my = config.my;
     };
-    users.${config.my.username} = import ../../../users/mkn;
   };
 }
