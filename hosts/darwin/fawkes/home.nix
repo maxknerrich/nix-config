@@ -11,10 +11,10 @@
 in {
   imports = [
     ../../../home
-    ../../../home/optional/development.nix
-    ../../../home/optional/git.nix
-    ../../../home/optional/herdr.nix
-    ../../../home/optional/pi.nix
+    ../../../home/development.nix
+    ../../../home/git.nix
+    ../../../home/herdr.nix
+    ../../../home/pi.nix
   ];
 
   services.proton-pass-agent = {

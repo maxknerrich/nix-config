@@ -25,11 +25,10 @@ home/
   shell.nix              # Fish, aliases, Bat, Eza, Zoxide, Mosh, Tree
   prompt.nix             # Starship and host banner
   theme.nix
-  optional/
-    development.nix      # Development CLIs and Vite Plus shell initialization
-    git.nix              # Personal Git identity and signing policy
-    herdr.nix            # Herdr and its window-title plugin
-    pi.nix               # Pi configuration links, not installation or credentials
+  development.nix        # Development CLIs and Vite Plus shell initialization
+  git.nix                # Personal Git identity and signing policy
+  herdr.nix              # Herdr and its window-title plugin
+  pi.nix                 # Pi configuration links, not installation or credentials
 modules/
   common/identity.nix    # Shared identity options and defaults
   darwin/                # macOS account, Nix and Home Manager integration
@@ -63,14 +62,14 @@ use the shell baseline plus Pi configuration:
 {
   imports = [
     ../../../home
-    ../../../home/optional/pi.nix
+    ../../../home/pi.nix
   ];
 }
 ```
 
 Fawkes explicitly imports all its existing optional features in
-`hosts/darwin/fawkes/home.nix`. Adding an optional file does nothing until a host
-imports it. Prefer ordinary NixOS and Home Manager options over custom wrappers.
+`hosts/darwin/fawkes/home.nix`. Adding a file under `home/` does nothing until a
+host or the shared baseline imports it. Prefer ordinary NixOS and Home Manager options over custom wrappers.
 
 Kronos does not use Home Manager yet. Future NixOS integration should use a Home
 Manager release compatible with the host's nixpkgs release and pass `inputs` and
