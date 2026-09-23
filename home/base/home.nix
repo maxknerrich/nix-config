@@ -1,10 +1,4 @@
 {my, ...}: {
-  imports = [
-    ./theme.nix
-    ./shell.nix
-    ./prompt.nix
-  ];
-
   home = {
     username = my.username;
     homeDirectory = my.homeDirectory;

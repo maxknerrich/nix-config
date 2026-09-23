@@ -5,7 +5,7 @@
     ./system.nix
   ];
 
-  home-manager.users.${config.my.username} = import ./home.nix;
+  home-manager.users.${config.my.username} = import ../../../home/hosts/darwin/fawkes.nix;
 
   system = {
     primaryUser = config.my.username;
