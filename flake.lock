@@ -458,6 +458,53 @@
         "type": "github"
       }
     },
+    "omintosh": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nix-darwin": [
+          "nix-darwin"
+        ],
+        "nix-homebrew": [
+          "nix-homebrew"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rift-tap": "rift-tap"
+      },
+      "locked": {
+        "lastModified": 1790322733,
+        "narHash": "sha256-xWRwuVKnsiqh/sGpWHBfinQDtqZMgOm3uidl6cZMkqM=",
+        "owner": "maxknerrich",
+        "repo": "omintosh",
+        "rev": "b9cdef375e2524287434c64930260a38f96b98f8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "maxknerrich",
+        "repo": "omintosh",
+        "type": "github"
+      }
+    },
+    "rift-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790075478,
+        "narHash": "sha256-nd/rfM1dBNdsrrojO8I9drPTdBmYfOaLz07ggMigz1A=",
+        "owner": "acsandmann",
+        "repo": "homebrew-tap",
+        "rev": "3fd6a2a8c9174bc43f0d3cf18009cc99e8e348e5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "acsandmann",
+        "repo": "homebrew-tap",
+        "rev": "3fd6a2a8c9174bc43f0d3cf18009cc99e8e348e5",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -471,7 +518,8 @@
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgs-stable": "nixpkgs-stable"
+        "nixpkgs-stable": "nixpkgs-stable",
+        "omintosh": "omintosh"
       }
     },
     "systems": {

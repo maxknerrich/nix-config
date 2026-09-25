@@ -29,6 +29,7 @@ home/
 modules/
   common/                    # Reusable system modules shared across platforms
   darwin/                    # Reusable nix-darwin modules
+    programs/<name>/         # Self-contained program integrations, such as Omadar
   nixos/                     # Reusable NixOS modules
 nixos-installer/             # Independently pinned installer ISO
 scripts/                     # Installation and recovery scripts
@@ -36,7 +37,9 @@ secrets/                     # Agenix rules and encrypted secrets
 t3code/                      # T3 Code submodule, not Nix configuration
 ```
 
-Put settings used by one host under `hosts/<platform>/<host>/`. Put reusable system configuration under `modules/`. User configuration belongs under `home/`, never `modules/`.
+Put settings used by one host under `hosts/<platform>/<host>/`. Put reusable system configuration under `modules/`. Personal user configuration belongs under `home/`.
+
+Self-contained program integrations belong under `modules/darwin/programs/<name>/`. Keep their implementation together, including private Home Manager adapters and helper scripts. The public entry point is `default.nix`; a private `home.nix` may configure the selected user. This is module implementation, not a place for unrelated personal dotfiles or per-host preferences. Host imports and enablement remain explicit.
 
 Home Manager imports are explicit. Put shared user settings in the narrowest `home/base/` group, platform integrations in `home/darwin/` or `home/linux/`, and select them from `home/hosts/`. Adding a file must not enable it automatically.
 

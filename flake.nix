@@ -47,6 +47,16 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+
+    omintosh = {
+      url = "github:maxknerrich/omintosh";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        nix-darwin.follows = "nix-darwin";
+        home-manager.follows = "home-manager";
+        nix-homebrew.follows = "nix-homebrew";
+      };
+    };
   };
 
   outputs = inputs @ {flake-parts, ...}:

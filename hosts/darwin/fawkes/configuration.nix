@@ -1,9 +1,19 @@
-{config, ...}: {
+{
+  config,
+  inputs,
+  ...
+}: {
   imports = [
     ../../../modules/darwin
+    inputs.omintosh.darwinModules.default
     ./apps.nix
     ./system.nix
   ];
+
+  services.omintosh = {
+    enable = true;
+    user = config.my.username;
+  };
 
   home-manager.users.${config.my.username} = import ../../../home/hosts/darwin/fawkes.nix;
 
