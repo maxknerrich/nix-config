@@ -1,53 +1,37 @@
 # nix-config
 
-Nix configuration for Max's Mac (`fawkes`, `aarch64-darwin`).
+Nix configuration for Max's infrastructure:
 
-## Bootstrap
+- `fawkes`: Apple Silicon MacBook managed by nix-darwin and Home Manager
+- `kronos`: x86-64 NixOS storage and KVM host
+- `nixos-installer`: independently pinned headless recovery and installation ISO
 
-Place this repo at `/Users/mkn/nix-config`, then run:
+## Layout
+
+- `hosts/` composes complete systems and holds host-specific settings.
+- `modules/` contains reusable system modules.
+- `home/` contains Home Manager profiles and dotfiles.
+- `nixos-installer/` contains the standalone installer flake.
+- `scripts/` contains installation and recovery scripts.
+- `secrets/` contains Agenix rules and encrypted secrets.
+
+See [`home/README.md`](home/README.md) for Home Manager composition.
+
+## Commands
 
 ```sh
-nix flake lock
-sudo -H darwin-rebuild switch --flake .#fawkes
+just verify   # Check formatting, scripts, hosts, and the installer without activation
+just build    # Build Fawkes without activating it
+just switch   # Build and activate Fawkes
+just update   # Update the main lock file
+just upgrade  # Update, verify, and activate Fawkes
+just iso      # Build the NixOS installer ISO
 ```
 
-If needed for the first run:
+For the first Fawkes activation:
 
 ```sh
 sudo -H nix run nix-darwin -- switch --flake .#fawkes
 ```
 
-## Configuration
-
-- Shared shell and CLI packages: `modules/users/mkn/terminal.nix`
-- Focused user modules: `git.nix`, `theme.nix`, `host-banner.nix`, and `pi.nix`
-- `fawkes` GUI applications: `modules/machines/darwin/fawkes/apps.nix`
-- Host-specific macOS settings: `modules/machines/darwin/fawkes/system.nix`
-
-## Headless NixOS installer
-
-The `nixos-installer/` configuration builds a minimal `x86_64-linux` ISO with
-DHCP, SSH key authentication for the `nixos` user, flakes, disko, and recovery
-tools. Disk formatting and installation remain manual.
-
-Changes to the installer or its flake inputs publish a verified, immutable
-[GitHub release](https://github.com/maxknerrich/nix-config/releases/latest).
-Build it locally on Linux or with a configured Linux builder:
-
-```sh
-just iso
-```
-
-The ISO is written beneath `result/iso/`. After booting it, find its address
-from DHCP or the local console and connect with `ssh nixos@<installer-ip>`.
-
-## Daily commands
-
-```sh
-just hooks    # Enable formatting and validation Git hooks for this clone.
-just switch   # Apply the current lock file.
-just update   # Update the lock file only.
-just upgrade  # Update, validate, and switch.
-just doctor   # Format, check, and build.
-just iso      # Build the headless NixOS installer ISO.
-```
+`just install host ip` formats disks and installs a host. It currently assumes Kronos's encrypted-disk layout and Proton Pass secret. `just unlock host ip` handles remote initrd unlock.
