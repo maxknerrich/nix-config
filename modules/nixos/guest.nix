@@ -104,6 +104,12 @@ in {
         ];
       };
 
+      # The persisted /home is bind-mounted after activation creates users, so
+      # tmpfiles makes the home directory on it.
+      systemd.tmpfiles.rules = let
+        user = config.users.users.${config.my.username};
+      in ["d ${user.home} 0${user.homeMode} ${user.name} ${user.group} -"];
+
       networking = {
         useNetworkd = true;
         useDHCP = false;
