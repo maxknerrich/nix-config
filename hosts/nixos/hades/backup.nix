@@ -32,7 +32,7 @@
       export KOPIA_CONFIG_PATH=/run/kopia-offsite/repository.config
       export KOPIA_CACHE_DIRECTORY=/srv/kopia-home/cache/offsite
       export KOPIA_PERSIST_CREDENTIALS_ON_CONNECT=false
-      mkdir -p -m 0700 /run/kopia-offsite
+      install -d -m 0700 /run/kopia-offsite
 
       case "''${1:-}" in
         create | connect)
