@@ -5,9 +5,9 @@ let
   # Host keys: each host decrypts only its own runtime secrets. A guest's key
   # is generated on its first boot and added here before its secrets exist.
   kronos = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGzJG2gc2lhki5QcshrKvnE66vc03xOnaqScfqPjmcLD kronos";
-  zeus = null;
-  hestia = null;
-  hades = null;
+  zeus = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDrBbMuuQzyRhWiWEssjVtFY7GywUyuu76UQ2P6eBfPZ zeus";
+  hestia = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICt6TXQAASPJCU+aLgaetmpgmTOPDKHMBPWlCGmWOnpB hestia";
+  hades = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPx+kAazbNRPOWA8irnb0pG3UCJICRCByUPQczxPVYWk hades";
 
   for = host:
     [mkn]
