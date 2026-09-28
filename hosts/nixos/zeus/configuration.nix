@@ -26,8 +26,8 @@
     })
   ];
 
-  # nix build, nix develop and just verify work inside the guest.
-  microvm.writableStoreOverlay = "/nix/.rw-store";
+  # nix build, nix develop and just verify work inside the guest; its store
+  # overlay is the scratch volume.
   nix.settings.max-jobs = 2;
 
   my.secrets.zeus-github-key.owner = config.my.username;

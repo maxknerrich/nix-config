@@ -91,6 +91,10 @@ in {
           inherit (v) image size mountPoint;
           label = "${name}-${volume}";
         }) (self.volumes or {});
+        # A writable layer over Kronos's read-only store: in RAM on the tmpfs
+        # root, on a volume where one is mounted here (Zeus). microvm.nix only
+        # runs the Nix daemon with it, and Home Manager's activation needs it.
+        writableStoreOverlay = "/nix/.rw-store";
       };
 
       fileSystems."/persist".neededForBoot = true;
