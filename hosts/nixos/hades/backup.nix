@@ -120,10 +120,7 @@ in {
       "/var/lib/kopia/home.config"
       home.path
     ];
-    path = [
-      pkgs.kopia
-      pkgs.openssl
-    ];
+    path = [pkgs.kopia];
     environment = kopiaEnv // {KOPIA_CONFIG_PATH = "/var/lib/kopia/home.config";};
     serviceConfig = {
       User = "kopia";
@@ -142,18 +139,38 @@ in {
       else
         kopia server user add mkn@fawkes --user-password="$KOPIA_SERVER_USER_PASSWORD"
       fi
-
-      # Loopback certificate for Caddy's HTTP/2 upstream; Caddy trusts exactly it.
-      if ! test -e ${tls}/cert.pem; then
-        (umask 077 && openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -nodes \
-          -days 3650 -subj /CN=127.0.0.1 -addext subjectAltName=IP:127.0.0.1 \
-          -keyout ${tls}/key.pem -out ${tls}/cert.pem)
-        chmod 0644 ${tls}/cert.pem
-      fi
     '';
     script = ''
       exec kopia server start --address=127.0.0.1:${toString config.my.services.kopia.backend} \
         --tls-cert-file=${tls}/cert.pem --tls-key-file=${tls}/key.pem
+    '';
+  };
+
+  # Loopback certificate for Caddy's HTTP/2 upstream; Caddy trusts exactly it.
+  # Caddy loads it at startup, so it exists before the Kopia server ever runs.
+  systemd.services.kopia-tls = {
+    description = "Create the loopback certificate between Caddy and Kopia";
+    before = [
+      "caddy.service"
+      "kopia-server.service"
+    ];
+    requiredBy = [
+      "caddy.service"
+      "kopia-server.service"
+    ];
+    path = [pkgs.openssl];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      User = "kopia";
+      Group = "kopia";
+    };
+    script = ''
+      test -e ${tls}/cert.pem && exit 0
+      (umask 077 && openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -nodes \
+        -days 3650 -subj /CN=127.0.0.1 -addext subjectAltName=IP:127.0.0.1 \
+        -keyout ${tls}/key.pem -out ${tls}/cert.pem)
+      chmod 0644 ${tls}/cert.pem
     '';
   };
 
