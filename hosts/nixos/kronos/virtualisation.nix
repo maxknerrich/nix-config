@@ -25,6 +25,10 @@ in {
     })
     guests;
 
+  # QEMU runs as `microvm` and creates Zeus's store image in the nested
+  # subvolume disko made; `v` also makes it a subvolume if it is missing.
+  systemd.tmpfiles.rules = ["v ${config.microvm.stateDir}/zeus/scratch 0775 microvm kvm -"];
+
   systemd.services =
     lib.concatMapAttrs (name: _: let
       certificate = (guestConfig name).my.guest.certificate;

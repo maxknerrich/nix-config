@@ -160,6 +160,9 @@ in {
                     mountpoint = "/var/lib/microvms";
                     mountOptions = ssdMountOptions;
                   };
+                  # Zeus's store overlay, nested so every @vms snapshot
+                  # leaves it out. Not mounted: it appears inside @vms.
+                  "@vms/zeus/scratch" = {};
                   "@hestia-state" = {
                     mountpoint = "/srv/guests/hestia/state";
                     mountOptions = ssdMountOptions ++ guestMountOptions;
