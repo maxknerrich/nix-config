@@ -45,6 +45,23 @@
     (guestConfig guest).my.services)
   guests);
 
+  # Zeus's dev-domain wildcard has no declared service; any name under it gets
+  # Caddy's 404, which is enough to watch the certificate's expiry.
+  zeusCertificate = "certificate.zeus.ts.knerrich.com";
+  certificateChecks = [
+    {
+      inherit alerts;
+      name = "dev-certificate";
+      group = "zeus";
+      url = "https://${zeusCertificate}";
+      interval = "1h";
+      conditions = [
+        "[STATUS] < 500"
+        "[CERTIFICATE_EXPIRATION] > 240h"
+      ];
+    }
+  ];
+
   sshChecks = lib.mapAttrsToList (guest: _: {
     inherit alerts;
     name = "ssh";
@@ -68,14 +85,16 @@ in {
   };
 
   # Every declared domain resolves to its guest's segment address, for Gatus.
-  networking.hosts = lib.foldlAttrs (hosts: guest: _:
-    hosts
-    // {
-      ${guestAddress guest} =
-        lib.mapAttrsToList (_: svc: svc.domain)
-        (lib.filterAttrs (_: svc: svc.domain != null) (guestConfig guest).my.services);
-    }) {}
-  guests;
+  networking.hosts =
+    lib.foldlAttrs (hosts: guest: _:
+      hosts
+      // {
+        ${guestAddress guest} =
+          lib.mapAttrsToList (_: svc: svc.domain)
+          (lib.filterAttrs (_: svc: svc.domain != null) (guestConfig guest).my.services);
+      }) {}
+    guests
+    // {${guestAddress "zeus"} = [zeusCertificate];};
 
   services.ntfy-sh = {
     enable = true;
@@ -147,7 +166,7 @@ in {
           success-threshold = 2;
         };
       };
-      endpoints = serviceChecks ++ sshChecks;
+      endpoints = serviceChecks ++ certificateChecks ++ sshChecks;
       # Backup jobs push success; silence past the interval alerts.
       external-endpoints =
         map (job: {
