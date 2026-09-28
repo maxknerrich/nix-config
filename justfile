@@ -38,6 +38,16 @@ install host ip:
 unlock host ip:
     PROTON_PASS_AGENT_REASON={{ quote("Unlock " + host + " remotely") }} UNLOCK_LUKS_PASSPHRASE={{ quote("pass://KDE/" + host + "/Keys.LUKS") }} UNLOCK_INITRD_HOST_KEY={{ quote("pass://KDE/" + host + "/initrd.Public key") }} IP={{ quote(ip) }} pass-cli run -- "$PWD/scripts/unlock-initrd.sh"
 
+# Deploy a hypervisor from Fawkes; it builds for itself and its guests. Kronos
+# stages every guest: changed guests restart, except Zeus (`just restart zeus`).
+# Guests are never deployed directly.
+deploy host:
+    nix run --inputs-from . nixpkgs-stable#nixos-rebuild-ng -- switch --flake .#{{ host }} --target-host {{ host }} --build-host {{ host }} --sudo
+
+# Restart a Kronos guest into its staged configuration.
+restart guest:
+    ssh -t kronos sudo systemctl restart microvm@{{ guest }}.service
+
 # Build the headless x86_64 NixOS installer ISO (requires a Linux builder).
 iso:
     nix build ./nixos-installer#nixosConfigurations.installer.config.system.build.isoImage

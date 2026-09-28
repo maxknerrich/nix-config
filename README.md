@@ -3,7 +3,11 @@
 Nix configuration for Max's infrastructure:
 
 - `fawkes`: Apple Silicon MacBook managed by nix-darwin and Home Manager
-- `kronos`: x86-64 NixOS storage and KVM host
+- `kronos`: x86-64 NixOS storage host and microvm hypervisor for four guests:
+  - `zeus`: coding agents (T3 Code, pi, codex) with HTTPS dev domains
+  - `hestia`: CLIProxyAPI, Executor, private DNS for `ts.knerrich.com`
+  - `hades`: Kopia server, Proton Drive mirror, offsite backup, Gatus, ntfy
+  - `hermes`: empty guest for assistant agents
 - `nixos-installer`: independently pinned headless recovery and installation ISO
 
 ## Layout
@@ -14,6 +18,8 @@ Nix configuration for Max's infrastructure:
 - `nixos-installer/` contains the standalone installer flake.
 - `scripts/` contains installation and recovery scripts.
 - `secrets/` contains Agenix rules and encrypted secrets.
+- `pkgs/` contains packages missing from nixpkgs.
+- `tailscale/policy.hujson` is the tailnet policy, applied by hand.
 
 See [`home/README.md`](home/README.md) for Home Manager composition.
 
@@ -26,7 +32,11 @@ just switch   # Build and activate Fawkes
 just update   # Update the main lock file
 just upgrade  # Update, verify, and activate Fawkes
 just iso      # Build the NixOS installer ISO
+just deploy kronos  # Build on Kronos, activate it and stage its guests
+just restart zeus   # Restart Zeus into its staged configuration
 ```
+
+Guests are `nixosConfigurations` deployed only through Kronos. A deploy restarts every changed guest except Zeus, which keeps its agent sessions until `just restart zeus`.
 
 For the first Fawkes activation:
 

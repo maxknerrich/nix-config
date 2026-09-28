@@ -32,8 +32,10 @@ modules/
     programs/<name>/         # Self-contained program integrations, such as Omadar
   nixos/                     # Reusable NixOS modules
 nixos-installer/             # Independently pinned installer ISO
+pkgs/<name>/                 # Packages missing from nixpkgs
 scripts/                     # Installation and recovery scripts
 secrets/                     # Agenix rules and encrypted secrets
+tailscale/                   # Tailnet policy, applied by hand
 t3code/                      # T3 Code submodule, not Nix configuration
 ```
 
