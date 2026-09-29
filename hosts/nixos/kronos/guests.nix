@@ -16,7 +16,7 @@
     id = 20;
     mem = 6144;
     vcpu = 4;
-    tailnet = null;
+    tailnet = "100.75.144.84";
     # Block volumes under Kronos's @vms subvolume; `scratch` is a nested
     # subvolume, so the store overlay stays out of every snapshot.
     volumes = {
@@ -37,7 +37,7 @@
     id = 30;
     mem = 3072;
     vcpu = 4;
-    tailnet = null;
+    tailnet = "100.89.246.95";
     state = "/srv/guests/hestia/state";
   };
 
@@ -45,7 +45,7 @@
     id = 40;
     mem = 1024;
     vcpu = 2;
-    tailnet = null;
+    tailnet = "100.85.54.23";
     state = "/srv/guests/hades/state";
   };
 }
