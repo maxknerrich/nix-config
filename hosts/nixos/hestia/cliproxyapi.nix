@@ -17,7 +17,7 @@ in {
 
   my.services.cliproxy = {
     backend = 8317;
-    domain = "cliproxy.ts.knerrich.com";
+    domain = "cliproxy.home.knerrich.tech";
     expose = "tailnet";
     allowGuests = [
       "zeus"

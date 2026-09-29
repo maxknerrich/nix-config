@@ -11,7 +11,7 @@
 
   networking.hostName = "hades";
 
-  my.guest.certificate = "ts.knerrich.com";
+  my.guest.certificate = "home.knerrich.tech";
 
   microvm.shares =
     # Only the three guest-state snapshot series, never the snapshot tree:

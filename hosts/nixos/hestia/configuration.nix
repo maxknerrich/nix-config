@@ -14,8 +14,8 @@
   # Names default to Hestia; other guests' domains and Zeus's dev domains point
   # at those guests. A guest's records appear once its tailnet address is known.
   records =
-    lib.optional (known "hestia") "/ts.knerrich.com/${tailnet "hestia"}"
-    ++ lib.optional (known "zeus") "/zeus.ts.knerrich.com/${tailnet "zeus"}"
+    lib.optional (known "hestia") "/home.knerrich.tech/${tailnet "hestia"}"
+    ++ lib.optional (known "zeus") "/dev.knerrich.tech/${tailnet "zeus"}"
     ++ lib.concatLists (lib.mapAttrsToList (guest: _:
       lib.optionals (guest != "hestia" && known guest)
       (map (svc: "/${svc.domain}/${tailnet guest}")
@@ -32,7 +32,7 @@ in {
   networking.hostName = "hestia";
 
   my.guest = {
-    certificate = "ts.knerrich.com";
+    certificate = "home.knerrich.tech";
     nixLd = true;
   };
 
@@ -48,8 +48,8 @@ in {
   # Executor runs in mkn's user manager, which must start at boot.
   users.users.${config.my.username}.linger = true;
 
-  # Tailscale split DNS sends ts.knerrich.com here from Max's devices. Guests
-  # never query it; they use Quad9 and .internal host entries.
+  # Tailscale split DNS sends home.knerrich.tech and dev.knerrich.tech here from
+  # Max's devices. Guests never query it; they use Quad9 and .internal host entries.
   my.services.dns = {
     backend = 53;
     proto = [
@@ -63,8 +63,11 @@ in {
     enable = true;
     resolveLocalQueries = false;
     settings = {
-      # Authoritative for the private zone only; nothing is forwarded upstream.
-      local = "/ts.knerrich.com/";
+      # Authoritative for the private zones only; nothing is forwarded upstream.
+      local = [
+        "/home.knerrich.tech/"
+        "/dev.knerrich.tech/"
+      ];
       address = records;
       no-resolv = true;
       no-hosts = true;

@@ -12,7 +12,7 @@
 in {
   my.services.executor = {
     backend = 4788;
-    domain = "executor.ts.knerrich.com";
+    domain = "executor.home.knerrich.tech";
     expose = "tailnet";
     allowGuests = [
       "zeus"

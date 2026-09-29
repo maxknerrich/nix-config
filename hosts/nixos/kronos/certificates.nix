@@ -8,8 +8,8 @@
 }: let
   token = config.my.secrets.kronos-cloudflare-token;
   certificates = {
-    "ts.knerrich.com" = "*.ts.knerrich.com";
-    "zeus.ts.knerrich.com" = "*.zeus.ts.knerrich.com";
+    "home.knerrich.tech" = "*.home.knerrich.tech";
+    "dev.knerrich.tech" = "*.dev.knerrich.tech";
   };
 in {
   my.secrets.kronos-cloudflare-token = {};
@@ -20,7 +20,7 @@ in {
       inherit (config.my) email;
       dnsProvider = "cloudflare";
       credentialFiles.CLOUDFLARE_DNS_API_TOKEN_FILE = token.path;
-      # Kronos's resolver would send ts.knerrich.com to Hestia's private zone,
+      # Kronos's resolver would send home.knerrich.tech to Hestia's private zone,
       # where the challenge record never exists.
       dnsResolver = "9.9.9.9:53";
       group = "certs";

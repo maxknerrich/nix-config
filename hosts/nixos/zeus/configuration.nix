@@ -14,7 +14,7 @@
   networking.hostName = "zeus";
 
   my.guest = {
-    certificate = "zeus.ts.knerrich.com";
+    certificate = "dev.knerrich.tech";
     nixLd = true;
   };
 
@@ -42,14 +42,14 @@
     expose = "tailnet";
   };
 
-  # <port>.zeus.ts.knerrich.com → localhost:<port> for ports 3000–9999 only,
+  # <port>.dev.knerrich.tech → localhost:<port> for ports 3000–9999 only,
   # which keeps system ports and Caddy's admin API out of reach. Dev servers
   # stay on localhost; HMR websockets pass through.
   services.caddy = {
     enable = true;
-    virtualHosts."https://*.zeus.ts.knerrich.com".extraConfig = ''
+    virtualHosts."https://*.dev.knerrich.tech".extraConfig = ''
       tls /run/certs/fullchain.pem /run/certs/key.pem
-      @dev header_regexp port Host ^([3-9][0-9]{3})\.zeus\.ts\.knerrich\.com$
+      @dev header_regexp port Host ^([3-9][0-9]{3})\.dev\.knerrich\.tech$
       handle @dev {
         reverse_proxy localhost:{re.port.1}
       }

@@ -5,7 +5,7 @@ Nix configuration for Max's infrastructure:
 - `fawkes`: Apple Silicon MacBook managed by nix-darwin and Home Manager
 - `kronos`: x86-64 NixOS storage host and microvm hypervisor for four guests:
   - `zeus`: coding agents (T3 Code, pi, codex) with HTTPS dev domains
-  - `hestia`: CLIProxyAPI, Executor, private DNS for `ts.knerrich.com`
+  - `hestia`: CLIProxyAPI, Executor, private DNS for `home.knerrich.tech`
   - `hades`: Kopia server, Proton Drive mirror, offsite backup, Gatus, ntfy
   - `hermes`: empty guest for assistant agents
 - `nixos-installer`: independently pinned headless recovery and installation ISO

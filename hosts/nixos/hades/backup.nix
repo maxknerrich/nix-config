@@ -62,7 +62,7 @@ in {
 
   my.services.kopia = {
     backend = 51515;
-    domain = "kopia.ts.knerrich.com";
+    domain = "kopia.home.knerrich.tech";
     expose = "tailnet";
     # Kopia's client protocol is gRPC, so HTTP/2 end to end. Kopia 0.23 serves
     # HTTP/2 only over TLS, so Caddy speaks TLS to it and pins its certificate.

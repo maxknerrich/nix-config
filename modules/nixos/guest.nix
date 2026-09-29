@@ -40,8 +40,8 @@ in {
     };
     certificate = lib.mkOption {
       type = lib.types.nullOr (lib.types.enum [
-        "ts.knerrich.com"
-        "zeus.ts.knerrich.com"
+        "home.knerrich.tech"
+        "dev.knerrich.tech"
       ]);
       default = null;
       description = "Kronos's wildcard certificate shared read-only to /run/certs.";

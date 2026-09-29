@@ -47,7 +47,7 @@
 
   # Zeus's dev-domain wildcard has no declared service; any name under it gets
   # Caddy's 404, which is enough to watch the certificate's expiry.
-  zeusCertificate = "certificate.zeus.ts.knerrich.com";
+  zeusCertificate = "certificate.dev.knerrich.tech";
   certificateChecks = [
     {
       inherit alerts;
@@ -74,12 +74,12 @@ in {
   my.services = {
     status = {
       backend = 8080;
-      domain = "status.ts.knerrich.com";
+      domain = "status.home.knerrich.tech";
       expose = "tailnet";
     };
     ntfy = {
       backend = 2586;
-      domain = "ntfy.ts.knerrich.com";
+      domain = "ntfy.home.knerrich.tech";
       expose = "tailnet";
     };
   };
@@ -100,7 +100,7 @@ in {
     enable = true;
     environmentFile = "${local}/ntfy.env";
     settings = {
-      base-url = "https://ntfy.ts.knerrich.com";
+      base-url = "https://ntfy.home.knerrich.tech";
       listen-http = ":${toString ntfyPort}";
       behind-proxy = true;
       # Max's user and Kronos's write-only publisher are created by hand.
