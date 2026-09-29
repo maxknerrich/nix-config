@@ -37,8 +37,11 @@
   users.users.${config.my.username}.linger = true;
   environment.systemPackages = [pkgs.curl];
 
+  # T3 listens on localhost; Caddy serves it under the dev wildcard, where an
+  # exact name wins over the port rule below.
   my.services.t3 = {
     backend = 3773;
+    domain = "t3.dev.knerrich.tech";
     expose = "tailnet";
   };
 
