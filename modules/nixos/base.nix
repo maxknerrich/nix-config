@@ -8,6 +8,8 @@
   users = {
     mutableUsers = false;
     groups.${config.my.username}.gid = 1000;
+    # Reads Kronos's certificates; the fixed gid carries over virtiofs to guests.
+    groups.certs.gid = 2000;
     users.${config.my.username} = {
       isNormalUser = true;
       description = config.my.fullName;

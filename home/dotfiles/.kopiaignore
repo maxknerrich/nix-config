@@ -1,0 +1,132 @@
+# Kopia exclusions for /Users/mkn
+
+# Explicit whole-directory exclusions
+/.Trash/
+/.codex/
+/Library/CloudStorage/
+/Library/Mobile Documents/com~apple~CloudDocs/
+
+# Operating-system metadata
+**/.DS_Store
+**/Thumbs.db
+**/desktop.ini
+
+# General generated caches
+/.cache/
+/.npm/
+/.matplotlib/
+/.pdfbox.cache
+/.zcompdump*
+
+# Generated package-manager installations and state
+/.vite-plus/
+/.local/share/pnpm/
+/.local/state/pnpm/
+/.local/share/uv/
+/Library/pnpm/
+**/.pnpm-store/
+**/.yarn/cache/
+
+# Nix and Home Manager generated state
+/.nix-profile
+/.nix-defexpr/
+/.local/state/nix/
+/.local/state/home-manager/
+/Applications/Home Manager Apps/
+
+# Nix development and build outputs
+**/.direnv/
+**/.devenv/
+**/.nix-shell/
+**/.gcroots/
+**/result
+
+# macOS and application caches
+/Library/Caches/
+/Library/**/Caches/
+/Library/**/Cache/
+/Library/**/cache/
+/Library/**/Code Cache/
+/Library/**/GPUCache/
+/Library/**/PersistentCache/
+/Library/**/WebKitCache/
+/Library/**/cache2/
+/Library/**/CacheStorage/
+/Library/**/download-cache/
+/Library/**/tmp/
+/Library/**/temp/
+/Library/**/Temporary/
+
+# Regenerable macOS indexes and narrowly scoped caches
+/Library/Metadata/CoreSpotlight/
+/Library/DuetExpertCenter/ModeCaches/
+/Library/DuetExpertCenter/caches/
+/Library/DuetExpertCenter/ClientModelCaches/
+/Library/DuetExpertCenter/UICaches/
+
+# Generated ComfyUI runtime and caches; models remain included
+/.config/ComfyUI/ComfyUI/standalone-env/
+/.config/ComfyUI/ComfyUI/ComfyUI/temp/
+/.config/ComfyUI/ComfyUI/ComfyUI/user/__manager/cache/
+
+# Additional application caches
+/.local/share/codebook/cache/
+/.local/share/MailbirdNext/Release/Misc/CefCache/
+
+# Log directories only. Do not globally exclude *.log because LevelDB
+# databases use that extension for live database segments.
+/Library/Logs/
+**/Logs/
+**/logs/
+
+# Known plain-text application logs
+/.config/herdr/*.log
+/.config/ComfyUI/ComfyUI/ComfyUI/user/comfyui*.log
+
+# Preserve Git reflogs
+!**/.git/logs/
+!**/.git/logs/**
+
+# JavaScript dependencies and generated output
+**/node_modules/
+**/.next/
+**/.nuxt/
+**/.svelte-kit/
+**/.turbo/
+**/.parcel-cache/
+**/.nyc_output/
+**/coverage/
+
+# Python environments and generated state
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.tox/
+**/.nox/
+**/.coverage
+**/htmlcov/
+
+# Conventional build-output directories
+**/build/
+**/dist/
+**/out/
+**/target/
+**/.output/
+**/DerivedData/
+**/CMakeFiles/
+**/cmake-build-*/
+
+# Editor and transient files
+**/*.swp
+**/*.swo
+**/*~
+**/*.tmp
+**/*.temp
+**/*.crdownload
+**/*.partial
+**/*.part

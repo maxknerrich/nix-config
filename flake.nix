@@ -25,6 +25,11 @@
       inputs.nixpkgs.follows = "nixpkgs-stable";
     };
 
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -6,5 +6,7 @@
     ../base/gui
     ./terminal.nix
     ./proton-pass.nix
+    ./ssh.nix
+    ./kopia.nix
   ];
 }

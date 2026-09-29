@@ -49,6 +49,8 @@
   environment.persistence."/persist" = {
     hideMounts = true;
     directories = [
+      # Issued certificates; without this every boot would re-issue.
+      "/var/lib/acme"
       "/var/lib/nixos"
       "/var/lib/systemd/timers"
       "/var/lib/tailscale"

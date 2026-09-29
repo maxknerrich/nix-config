@@ -1,11 +1,18 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
-}: {
+}: let
+  consolePassword = config.my.secrets.kronos-console-password;
+  ntfyPort = inputs.self.nixosConfigurations.hades.config.my.services.ntfy.backend;
+in {
   imports = [
     ../../../modules/nixos/base.nix
+    ../../../modules/nixos/home.nix
+    ../../../modules/nixos/notify.nix
+    ../../../modules/nixos/secrets.nix
     inputs.agenix.nixosModules.default
     inputs.disko.nixosModules.disko
     inputs.impermanence.nixosModules.impermanence
@@ -15,12 +22,33 @@
     ./remote-unlock.nix
     ./networking.nix
     ./virtualisation.nix
+    ./certificates.nix
+    ./snapshots.nix
   ];
 
-  users.users.${config.my.username}.extraGroups = [
-    "kvm"
-    "libvirtd"
-  ];
+  my.secrets = {
+    # Login at the KVM console only; SSH stays key-only.
+    kronos-console-password = {};
+    # Publish-only token of the `kronos` ntfy user on Hades.
+    kronos-ntfy-token = {};
+  };
+
+  users.users.${config.my.username} = {
+    extraGroups = ["kvm"];
+    hashedPasswordFile = lib.mkIf consolePassword.present consolePassword.path;
+    hashedPassword = lib.mkIf consolePassword.present (lib.mkForce null);
+  };
+
+  my.notify = {
+    url = "http://hades.internal:${toString ntfyPort}/alerts";
+    tokenFile = config.my.secrets.kronos-ntfy-token.path;
+  };
+
+  # Leave CPU for running guests while Kronos builds itself and them.
+  nix.settings = {
+    max-jobs = 2;
+    cores = 2;
+  };
 
   zramSwap = {
     enable = true;

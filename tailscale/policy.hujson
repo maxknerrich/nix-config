@@ -1,0 +1,19 @@
+// Tailnet policy, applied by hand in the Tailscale admin console.
+//
+// Max's devices reach every node. Kronos (tag:host) and its guests
+// (tag:guest) are owned by their tags, so nothing is granted from them:
+// guests talk to each other only over Kronos's routed segment, never here.
+{
+	"tagOwners": {
+		"tag:host":  ["autogroup:admin"],
+		"tag:guest": ["autogroup:admin"],
+	},
+
+	"grants": [
+		{
+			"src": ["autogroup:member"],
+			"dst": ["*"],
+			"ip":  ["*"],
+		},
+	],
+}

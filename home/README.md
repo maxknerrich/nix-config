@@ -11,6 +11,6 @@ Home configuration is split by capability and composed with explicit imports. Ad
 - `hosts/` selects profiles and host-specific overrides.
 - `dotfiles/` contains files linked by Home Manager.
 
-Fawkes uses the Darwin profile and opts into Pi. Kronos does not use Home Manager yet. A future headless Kronos profile should import `linux/core.nix`, not `linux/tui.nix` or the GUI profile.
+Fawkes uses the Darwin profile and opts into Pi. Kronos, Hestia and Hades import `linux/core.nix`; Zeus imports `linux/tui.nix` and Pi. NixOS hosts load their profile from `hosts/linux/<hostname>.nix` through `modules/nixos/home.nix`.
 
 Pi configuration does not include credentials, sessions, or runtime state. Those stay outside this repository.

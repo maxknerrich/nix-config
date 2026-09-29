@@ -28,6 +28,12 @@
     "nofail"
     "x-systemd.device-timeout=10s"
   ];
+  # Guest-writable subvolumes: nothing a guest writes is special on Kronos.
+  guestMountOptions = [
+    "nosuid"
+    "nodev"
+    "noexec"
+  ];
   bootMountOptions = [
     "umask=0077"
     "nofail"
@@ -116,6 +122,9 @@ in {
               settings = luksSsdSettings;
               content = {
                 type = "btrfs";
+                # The top level holds btrbk's short-lived rpool snapshots.
+                mountpoint = "/mnt/rpool";
+                mountOptions = ssdMountOptions ++ guestMountOptions ++ ["subvol=/"];
                 extraArgs = [
                   "-f"
                   "-L rpool"
@@ -145,9 +154,18 @@ in {
                     mountpoint = "/persist";
                     mountOptions = ssdMountOptions;
                   };
+                  # Zeus's volumes; its store overlay is the nested
+                  # subvolume zeus/scratch, outside every snapshot.
                   "@vms" = {
-                    mountpoint = "/var/lib/libvirt";
+                    mountpoint = "/var/lib/microvms";
                     mountOptions = ssdMountOptions;
+                  };
+                  # Zeus's store overlay, nested so every @vms snapshot
+                  # leaves it out. Not mounted: it appears inside @vms.
+                  "@vms/zeus/scratch" = {};
+                  "@hestia-state" = {
+                    mountpoint = "/srv/guests/hestia/state";
+                    mountOptions = ssdMountOptions ++ guestMountOptions;
                   };
                   "@apps" = {
                     mountpoint = "/srv/apps";
@@ -200,6 +218,8 @@ in {
             settings = luksSettings;
             content = {
               type = "btrfs";
+              mountpoint = "/mnt/dtank";
+              mountOptions = hddMountOptions ++ guestMountOptions ++ ["subvol=/"];
               extraArgs = [
                 "-f"
                 "-L dtank"
@@ -212,9 +232,31 @@ in {
                   mountpoint = "/srv/storage";
                   mountOptions = hddMountOptions;
                 };
+                # One directory per btrbk series; Hades sees only the
+                # three *-state directories.
                 "@snapshots" = {
-                  mountpoint = "/srv/snapshots/storage";
-                  mountOptions = hddMountOptions;
+                  mountpoint = "/srv/snapshots";
+                  mountOptions = hddMountOptions ++ guestMountOptions;
+                };
+                "@hades-state" = {
+                  mountpoint = "/srv/guests/hades/state";
+                  mountOptions = hddMountOptions ++ guestMountOptions;
+                };
+                "@hermes-state" = {
+                  mountpoint = "/srv/guests/hermes/state";
+                  mountOptions = hddMountOptions ++ guestMountOptions;
+                };
+                "@kopia-home" = {
+                  mountpoint = "/srv/storage/kopia-home";
+                  mountOptions = hddMountOptions ++ guestMountOptions;
+                };
+                "@proton" = {
+                  mountpoint = "/srv/storage/proton";
+                  mountOptions = hddMountOptions ++ guestMountOptions;
+                };
+                "@hestia-bulk" = {
+                  mountpoint = "/srv/storage/hestia";
+                  mountOptions = hddMountOptions ++ guestMountOptions;
                 };
               };
             };
@@ -224,18 +266,28 @@ in {
     };
   };
 
+  # disko is install-time only: subvolumes added later are created by hand on
+  # the live system, and re-running disko would wipe Kronos.
   # Mount by filesystem label so either RAID1 member can be discovered first.
   fileSystems =
     lib.genAttrs [
       "/"
       "/nix"
       "/persist"
-      "/var/lib/libvirt"
+      "/var/lib/microvms"
       "/srv/apps"
       "/var/cache"
+      "/mnt/rpool"
+      "/srv/guests/hestia/state"
     ] (_: {device = lib.mkForce "/dev/disk/by-label/rpool";})
     // lib.genAttrs [
       "/srv/storage"
-      "/srv/snapshots/storage"
+      "/srv/snapshots"
+      "/mnt/dtank"
+      "/srv/guests/hades/state"
+      "/srv/guests/hermes/state"
+      "/srv/storage/kopia-home"
+      "/srv/storage/proton"
+      "/srv/storage/hestia"
     ] (_: {device = lib.mkForce "/dev/disk/by-label/dtank";});
 }
