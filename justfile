@@ -38,11 +38,13 @@ install host ip:
 unlock host ip:
     PROTON_PASS_AGENT_REASON={{ quote("Unlock " + host + " remotely") }} UNLOCK_LUKS_PASSPHRASE={{ quote("pass://KDE/" + host + "/Keys.LUKS") }} UNLOCK_INITRD_HOST_KEY={{ quote("pass://KDE/" + host + "/initrd.Public key") }} IP={{ quote(ip) }} pass-cli run -- "$PWD/scripts/unlock-initrd.sh"
 
-# Deploy a hypervisor from Fawkes; it builds for itself and its guests. Kronos
-# stages every guest: changed guests restart, except Zeus (`just restart zeus`).
-# Guests are never deployed directly.
+# Deploy a hypervisor from Fawkes; it builds for itself and its guests. Only the
+# flake's source is sent: copying the derivation closure, as nixos-rebuild's
+# --build-host does, takes hours over the long link. Kronos stages every guest:
+# changed guests restart, except Zeus (`just restart zeus`). Guests are never
+# deployed directly.
 deploy host:
-    nix run --inputs-from . nixpkgs-stable#nixos-rebuild-ng -- switch --flake .#{{ host }} --target-host {{ host }} --build-host {{ host }} --sudo
+    src=$(nix eval --raw .#nixosConfigurations.{{ host }}._module.specialArgs.inputs.self.outPath) && nix copy --to ssh-ng://{{ host }} "$src" && ssh -t {{ host }} sudo nixos-rebuild switch --flake "$src#{{ host }}"
 
 # Restart a Kronos guest into its staged configuration.
 restart guest:
